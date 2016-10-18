@@ -227,14 +227,12 @@
 				</dependency>
 
 				<!-- Database initialization -->
-				<!-- TODO: Configure flywaydb 
-				<dependency>
-					<groupId>org.flywaydb</groupId>
-					<artifactId>flyway-core</artifactId>
-				</dependency> -->
+				<!-- TODO: Configure flywaydb <dependency> <groupId>org.flywaydb</groupId> 
+					<artifactId>flyway-core</artifactId> </dependency> -->
 			</dependencies>
 
 			<properties>
+				<!-- Profile -->
 				<spring.profiles.active>dev</spring.profiles.active>
 			</properties>
 		</profile>
@@ -252,6 +250,7 @@
 			</dependencies>
 
 			<properties>
+				<!-- Profile -->
 				<spring.profiles.active>pro</spring.profiles.active>
 			</properties>
 		</profile>

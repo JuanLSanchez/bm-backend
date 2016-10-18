@@ -1,0 +1,18 @@
+app:
+  c3p0:
+    datasource: 
+      jdbc-url: 
+      user: 
+      password: 
+      driver-class: com.mysql.jdbc.Driver
+spring:
+  profiles:
+    active: pro
+  jpa: 
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: validate
+      show-sql: false
+logging:
+  config: classpath:logback-pro.xml
