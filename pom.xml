@@ -33,6 +33,13 @@
 
 	<dependencies>
 
+		<!-- Inject -->
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>${javax.inject.version}</version>
+		</dependency>
+
 		<!-- Actuator -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -205,6 +212,13 @@
 
 	<profiles>
 		<profile>
+			<id>flyway</id>
+			<properties>
+				<profile.flyway>,flyway</profile.flyway>
+			</properties>
+		</profile>
+
+		<profile>
 			<id>dev</id>
 
 			<activation>
@@ -226,14 +240,16 @@
 					<optional>true</optional>
 				</dependency>
 
-				<!-- Database initialization -->
-				<!-- TODO: Configure flywaydb <dependency> <groupId>org.flywaydb</groupId> 
-					<artifactId>flyway-core</artifactId> </dependency> -->
+				<!-- Flyway -->
+				<dependency>
+					<groupId>org.flywaydb</groupId>
+					<artifactId>flyway-core</artifactId>
+				</dependency>
 			</dependencies>
 
 			<properties>
 				<!-- Profile -->
-				<spring.profiles.active>dev</spring.profiles.active>
+				<spring.profiles.active>dev${profile.flyway}</spring.profiles.active>
 			</properties>
 		</profile>
 		<profile>
