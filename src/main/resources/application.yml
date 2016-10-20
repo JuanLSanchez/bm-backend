@@ -1,4 +1,4 @@
-app: 
+app:
   c3p0:
     datasource:
       max-pool-size: 20
@@ -8,7 +8,8 @@ app:
       test-connection-on-checkin: true
       idle-connection-test-period: 30
 spring:
-    application:
-        name: bm
-    profiles: 
-        active: '@spring.profiles.active@'
+  application:
+    name: bm
+  profiles:
+    active: '@spring.profiles.active@'
+management.context-path: /manage
