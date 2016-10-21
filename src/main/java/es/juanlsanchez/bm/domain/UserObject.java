@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class UserObject  extends BaseEntity {
-	
+public abstract class UserObject extends BaseEntity {
+
 	@ManyToOne
 	private User principal;
 

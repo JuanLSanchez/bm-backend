@@ -22,12 +22,12 @@ public class Operation extends UserObject {
 	@NotBlank
 	private String name;
 
-	//Relationships------------------------------------------------------------
+	// Relationships------------------------------------------------------------
 	@Valid
 	@OneToMany(mappedBy = "operation")
 	private Collection<Invoice> invoices;
 	@Valid
 	@ManyToOne(optional = false)
 	private Section section;
-	
+
 }

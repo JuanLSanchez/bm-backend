@@ -21,7 +21,7 @@ public class Section extends UserObject {
 	@NotBlank
 	private String name;
 
-	//Relationships------------------------------------------------------------
+	// Relationships------------------------------------------------------------
 	@Valid
 	@OneToMany(mappedBy = "section")
 	private Collection<Operation> operations;

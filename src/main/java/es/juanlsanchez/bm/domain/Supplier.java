@@ -20,9 +20,9 @@ public class Supplier extends UserObject {
 	@NotBlank
 	private String name;
 	private String nif;
-	
-	//Relationships------------------------------------------------------------
-	@OneToMany(mappedBy="supplier")
+
+	// Relationships------------------------------------------------------------
+	@OneToMany(mappedBy = "supplier")
 	private Collection<Invoice> invoices;
 
 }

@@ -16,13 +16,13 @@ import lombok.ToString;
 @ToString
 public class InvoiceLine extends BaseEntity {
 	// Attributes -------------------------------------------------------------
-	@Range(min=0, max=100)
+	@Range(min = 0, max = 100)
 	private int iva;
 	private double base;
-	
-	//Relationships------------------------------------------------------------
+
+	// Relationships------------------------------------------------------------
 	@Valid
-	@ManyToOne(optional=false)
+	@ManyToOne(optional = false)
 	private Invoice invoice;
-	
+
 }
