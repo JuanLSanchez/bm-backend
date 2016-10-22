@@ -1,0 +1,55 @@
+databaseChangeLog: 
+- changeSet:
+    id: 1
+    author: JuanLSanchez
+    changes:
+    - loadData: 
+        encoding: UTF-8
+        file: db/changelog/loaddata/user_api.csv
+        tableName: user_api
+        separator: ;
+        schemaName: null
+        columns:
+        - column:
+            name: creation_moment
+            type: timestamp
+        - column:
+            name: activated
+            type: boolean
+#    - insert:
+#        tableName: user_api
+#        columns:
+#        - column:
+#            name: id
+#            value: 1
+#        - column:
+#            name: login
+#            value: admin
+#        - column:
+#            name: password_hash
+#            value: $2a$10$xvWAQrz1kyZ2YpCasVZZ1OjXp/SwaTZOytf7cjy7AEm8qQsKI6e.i
+#        - column:
+#            name: surname
+#            value: surname admin
+#        - column:
+#            name: creation_moment
+#            type: timestamp
+#            value: 1328055111692
+#        - column:
+#            name: activated
+#            value: true
+#    - insert: 
+#        tableName: authority
+#        columns:
+#        - column:
+#            name: name
+#            value: ADMIN
+#    - insert: 
+#        tableName: user_authority
+#        columns: 
+#        - column:
+#            name: user_id
+#            value: 1
+#        - column: 
+#            name: authority_name
+#            value: ADMIN

@@ -227,7 +227,22 @@
 			</dependencies>
 
 			<properties>
-				<profile.flyway>,flyway</profile.flyway>
+				<profile.database.migration>,flyway</profile.database.migration>
+			</properties>
+		</profile>
+		<profile>
+			<id>liquibase</id>
+
+			<dependencies>
+				<!-- Liquibase -->
+				<dependency>
+					<groupId>org.liquibase</groupId>
+					<artifactId>liquibase-core</artifactId>
+				</dependency>
+			</dependencies>
+
+			<properties>
+				<profile.database.migration>,liquibase</profile.database.migration>
 			</properties>
 		</profile>
 
@@ -284,7 +299,7 @@
 
 			<properties>
 				<!-- Profile -->
-				<spring.profiles.active>dev${profile.flyway}${profile.db}</spring.profiles.active>
+				<spring.profiles.active>dev${profile.database.migration}${profile.db}</spring.profiles.active>
 			</properties>
 
 			<build>
