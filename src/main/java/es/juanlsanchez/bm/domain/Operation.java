@@ -18,16 +18,16 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Operation extends UserObject {
-	// Attributes -------------------------------------------------------------
-	@NotBlank
-	private String name;
+    // Attributes -------------------------------------------------------------
+    @NotBlank
+    private String name;
 
-	// Relationships------------------------------------------------------------
-	@Valid
-	@OneToMany(mappedBy = "operation")
-	private Collection<Invoice> invoices;
-	@Valid
-	@ManyToOne(optional = false)
-	private Section section;
+    // Relationships------------------------------------------------------------
+    @Valid
+    @OneToMany(mappedBy = "operation")
+    private Collection<Invoice> invoices;
+    @Valid
+    @ManyToOne(optional = false)
+    private Section section;
 
 }

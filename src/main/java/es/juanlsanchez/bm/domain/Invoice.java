@@ -23,21 +23,21 @@ import lombok.ToString;
 @ToString
 @Table(indexes = { @Index(columnList = "dateBuy") })
 public class Invoice extends UserObject {
-	// Attributes -------------------------------------------------------------
-	private String number;
-	@NotNull
-	@Past
-	private Instant dateBuy;
+    // Attributes -------------------------------------------------------------
+    private String number;
+    @NotNull
+    @Past
+    private Instant dateBuy;
 
-	// Relationships------------------------------------------------------------
-	@Valid
-	@ManyToOne(optional = false)
-	private Supplier supplier;
-	@Valid
-	@ManyToOne(optional = false)
-	private Operation operation;
-	@Valid
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "invoice")
-	private Collection<InvoiceLine> invoiceLines;
+    // Relationships------------------------------------------------------------
+    @Valid
+    @ManyToOne(optional = false)
+    private Supplier supplier;
+    @Valid
+    @ManyToOne(optional = false)
+    private Operation operation;
+    @Valid
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "invoice")
+    private Collection<InvoiceLine> invoiceLines;
 
 }

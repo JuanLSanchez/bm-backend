@@ -17,13 +17,13 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Section extends UserObject {
-	// Attributes -------------------------------------------------------------
-	@NotBlank
-	private String name;
+    // Attributes -------------------------------------------------------------
+    @NotBlank
+    private String name;
 
-	// Relationships------------------------------------------------------------
-	@Valid
-	@OneToMany(mappedBy = "section")
-	private Collection<Operation> operations;
+    // Relationships------------------------------------------------------------
+    @Valid
+    @OneToMany(mappedBy = "section")
+    private Collection<Operation> operations;
 
 }

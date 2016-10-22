@@ -16,13 +16,13 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Supplier extends UserObject {
-	// Attributes -------------------------------------------------------------
-	@NotBlank
-	private String name;
-	private String nif;
+    // Attributes -------------------------------------------------------------
+    @NotBlank
+    private String name;
+    private String nif;
 
-	// Relationships------------------------------------------------------------
-	@OneToMany(mappedBy = "supplier")
-	private Collection<Invoice> invoices;
+    // Relationships------------------------------------------------------------
+    @OneToMany(mappedBy = "supplier")
+    private Collection<Invoice> invoices;
 
 }

@@ -32,10 +32,10 @@
 	</properties>
 
 	<dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
 		<!-- Inject -->
 		<dependency>
@@ -45,10 +45,10 @@
 		</dependency>
 
 		<!-- Actuator -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 
 		<!-- Tomcat -->
 		<dependency>
@@ -217,8 +217,51 @@
 	<profiles>
 		<profile>
 			<id>flyway</id>
+
+			<dependencies>
+				<!-- Flyway -->
+				<dependency>
+					<groupId>org.flywaydb</groupId>
+					<artifactId>flyway-core</artifactId>
+				</dependency>
+			</dependencies>
+
 			<properties>
 				<profile.flyway>,flyway</profile.flyway>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>h2</id>
+
+			<dependencies>
+				<!-- Database conection -->
+				<dependency>
+					<groupId>com.h2database</groupId>
+					<artifactId>h2</artifactId>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+
+			<properties>
+				<profile.db>,h2</profile.db>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>mysql</id>
+
+			<dependencies>
+				<!-- Database conection -->
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+
+			<properties>
+				<profile.db>,mysql</profile.db>
 			</properties>
 		</profile>
 
@@ -230,12 +273,6 @@
 			</activation>
 
 			<dependencies>
-				<!-- Database conection -->
-				<dependency>
-					<groupId>com.h2database</groupId>
-					<artifactId>h2</artifactId>
-					<scope>runtime</scope>
-				</dependency>
 
 				<!-- Development tools -->
 				<dependency>
@@ -243,18 +280,42 @@
 					<artifactId>spring-boot-devtools</artifactId>
 					<optional>true</optional>
 				</dependency>
-
-				<!-- Flyway -->
-				<dependency>
-					<groupId>org.flywaydb</groupId>
-					<artifactId>flyway-core</artifactId>
-				</dependency>
 			</dependencies>
 
 			<properties>
 				<!-- Profile -->
-				<spring.profiles.active>dev${profile.flyway}</spring.profiles.active>
+				<spring.profiles.active>dev${profile.flyway}${profile.db}</spring.profiles.active>
 			</properties>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<version>1.4.1</version>
+						<executions>
+							<execution>
+								<id>enforce-property</id>
+								<goals>
+									<goal>enforce</goal>
+								</goals>
+								<configuration>
+									<rules>
+										<requireProperty>
+											<property>profile.db</property>
+											<message>You must set a profile.db property!</message>
+											<regex>.*\d.*</regex>
+											<regexMessage>The basedir property must contain at least one
+												digit.</regexMessage>
+										</requireProperty>
+									</rules>
+									<fail>true</fail>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 		<profile>
 			<id>pro</id>

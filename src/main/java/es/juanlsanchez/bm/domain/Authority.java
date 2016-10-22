@@ -17,37 +17,42 @@ import lombok.Data;
 @Table(name = "authority")
 public class Authority {
 
-	@NotNull
-	@Size(min = 0, max = 50)
-	@Id
-	@Column(length = 50)
-	private String name;
+    @NotNull
+    @Size(min = 0, max = 50)
+    @Id
+    @Column(length = 50)
+    private String name;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		Authority authority = (Authority) o;
-
-		if (name != null ? !name.equals(authority.name) : authority.name != null) {
-			return false;
-		}
-
-		return true;
+    @Override
+    public boolean equals(Object o) {
+	if (this == o) {
+	    return true;
+	}
+	if (o == null
+		|| getClass() != o.getClass()) {
+	    return false;
 	}
 
-	@Override
-	public int hashCode() {
-		return name != null ? name.hashCode() : 0;
+	Authority authority = (Authority) o;
+
+	if (name != null ? !name.equals(authority.name) : authority.name != null) {
+	    return false;
 	}
 
-	@Override
-	public String toString() {
-		return "Authority{" + "name='" + name + '\'' + "}";
-	}
+	return true;
+    }
+
+    @Override
+    public int hashCode() {
+	return name != null ? name.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+	return "Authority{"
+		+ "name='"
+		+ name
+		+ '\''
+		+ "}";
+    }
 }

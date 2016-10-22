@@ -10,11 +10,11 @@ import es.juanlsanchez.bm.domain.User;
 @Transactional(rollbackFor = Throwable.class)
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	Optional<User> findOneByLogin(String login);
+    Optional<User> findOneByLogin(String login);
 
-	Optional<User> findOneById(Long userId);
+    Optional<User> findOneById(Long userId);
 
-	@Override
-	void delete(User t);
+    @Override
+    void delete(User t);
 
 }
