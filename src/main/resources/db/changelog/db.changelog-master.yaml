@@ -30,3 +30,7 @@ databaseChangeLog:
         - column:
             name: income_date
             type: timestamp
+    - loadData: 
+        encoding: UTF-8
+        file: db/changelog/loaddata/section.csv
+        tableName: section
