@@ -22,3 +22,11 @@ databaseChangeLog:
         encoding: UTF-8
         file: db/changelog/loaddata/user_authority.csv
         tableName: user_authority
+    - loadData: 
+        encoding: UTF-8
+        file: db/changelog/loaddata/income.csv
+        tableName: income
+        columns:
+        - column:
+            name: income_date
+            type: timestamp
