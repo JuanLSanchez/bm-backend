@@ -42,3 +42,7 @@ databaseChangeLog:
         encoding: UTF-8
         file: db/changelog/loaddata/supplier.csv
         tableName: supplier
+    - loadData: 
+        encoding: UTF-8
+        file: db/changelog/loaddata/invoice.csv
+        tableName: invoice
