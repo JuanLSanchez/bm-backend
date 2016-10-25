@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +45,14 @@ public class IncomeResource {
 	HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pruebas");
 
 	return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<IncomeDTO> findOne(@PathVariable Long id) throws URISyntaxException {
+	log.debug("REST request to find income: {}", id);
+	return incomeManager.findOne(id)
+		.map(incomeDto -> new ResponseEntity<>(incomeDto, HttpStatus.OK))
+		.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }

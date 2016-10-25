@@ -10,7 +10,8 @@ import es.juanlsanchez.bm.web.dto.IncomeDTO;
 @Mapper(componentModel = "spring")
 public interface IncomeMapper {
 
-    @Mappings({ @Mapping(target = "incomeDate", source = "incomeDate"),
+    @Mappings({ @Mapping(target = "id", source = "id"),
+	    @Mapping(target = "incomeDate", source = "incomeDate"),
 	    @Mapping(target = "name", source = "name"),
 	    @Mapping(target = "nif", source = "nif"),
 	    @Mapping(target = "base", source = "base"),

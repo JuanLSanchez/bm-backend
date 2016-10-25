@@ -1,5 +1,7 @@
 package es.juanlsanchez.bm.manager.impl;
 
+import java.util.Optional;
+
 import javax.inject.Inject;
 
 import org.springframework.data.domain.Page;
@@ -26,6 +28,12 @@ public class DefaultIncomeManager implements IncomeManager {
     @Override
     public Page<IncomeDTO> findAllByPrincipal(Pageable pageable) {
 	return incomeService.findAllByPrincipal(pageable)
+		.map(income -> incomeMapper.incomeToIncomeDTO(income));
+    }
+
+    @Override
+    public Optional<IncomeDTO> findOne(Long id) {
+	return incomeService.findOne(id)
 		.map(income -> incomeMapper.incomeToIncomeDTO(income));
     }
 

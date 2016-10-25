@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class IncomeDTO {
 
+    private Long id;
     @NotNull
     @Past
     @JsonProperty("income_date")
