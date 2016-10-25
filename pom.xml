@@ -29,6 +29,7 @@
 		<org.projectlombok.maven.version>${org.lombok.version}.0</org.projectlombok.maven.version>
 		<com.google.guava.version>19.0</com.google.guava.version>
 		<com.mchange.version>0.9.5.2</com.mchange.version>
+		<cucumber.version>1.2.4</cucumber.version>
 	</properties>
 
 	<dependencies>
@@ -114,6 +115,20 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- cucumber -->
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-spring</artifactId>
+			<version>${cucumber.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -210,6 +225,9 @@
 			<testResource>
 				<directory>${project.basedir}/src/test/resources</directory>
 				<filtering>true</filtering>
+			</testResource>
+			<testResource>
+				<directory>${project.basedir}/src/test/features</directory>
 			</testResource>
 		</testResources>
 	</build>
