@@ -1,5 +1,6 @@
 Feature: Income management
 
   Scenario: List income without user
-    When I search my recipes
-    Then not found recipes
+    Given the income resource
+    When I make a get request to the URL '/api/incomes'
+    Then http status is unauthorized
