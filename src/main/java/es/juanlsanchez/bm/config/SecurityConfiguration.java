@@ -14,12 +14,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 
 import es.juanlsanchez.bm.security.AuthoritiesConstants;
+import es.juanlsanchez.bm.security.jwt.JWTConfigurer;
+import es.juanlsanchez.bm.security.jwt.TokenProvider;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Inject
     private UserDetailsService userDetailsService;
+
+    @Inject
+    private TokenProvider tokenProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -34,14 +39,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-	http.httpBasic();
-	http.headers()
+	http.csrf()
+		.disable()
+		.headers()
 		.frameOptions()
 		.disable();
 
 	http.sessionManagement()
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+	http.authorizeRequests()
+		.antMatchers("/api/register")
+		.permitAll()
+		.antMatchers("/api/activate")
+		.permitAll()
+		.antMatchers("/api/authenticate")
+		.permitAll()
+		.antMatchers("/api/account/reset_password/init")
+		.permitAll()
+		.antMatchers("/api/account/reset_password/finish")
+		.permitAll()
+		.antMatchers("/api/profile-info")
+		.permitAll();
 	http.authorizeRequests()
 		.antMatchers(Constants.START_URL_API
 			+ "/**")
@@ -57,8 +76,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	http.authorizeRequests()
 		.anyRequest()
 		.hasAuthority(AuthoritiesConstants.ADMIN);
-	http.csrf()
-		.disable();
+	http.apply(securityConfigurerAdapter());
 
     }
 
@@ -68,5 +86,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
 	return new SecurityEvaluationContextExtension();
+    }
+
+    private JWTConfigurer securityConfigurerAdapter() {
+	return new JWTConfigurer(tokenProvider);
     }
 }
