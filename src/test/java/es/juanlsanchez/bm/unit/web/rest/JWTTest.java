@@ -55,7 +55,6 @@ public class JWTTest {
     @Before
     public void setup() {
 	this.mvc = MockMvcBuilders.standaloneSetup(userJWTController)
-		.apply(springSecurity(springSecurityFilterChain))
 		.build();
     }
 
@@ -97,7 +96,7 @@ public class JWTTest {
 		.content(TestUtil.convertObjectToJsonBytes(new LoginDTO(BAD_LOGIN, BAD_PASSWORD, true))));
 	// result.andExpect(status().isUnauthorized());
 	result.andExpect(jsonPath("$.AuthenticationException", is("Bad credentials")));
-
+	
 	assertThat(result.andReturn()
 		.getResponse()
 		.getHeader(JWTConfigurer.AUTHORIZATION_HEADER)).isNull();
