@@ -12,37 +12,40 @@ import cucumber.api.java.en.When;
 
 public class GeneralDefs extends StepDefs {
 
-    private ContainerDefs containerDefs;
+  private ContainerDefs containerDefs;
 
-    @Before
-    public void setup() {
-	containerDefs = ContainerDefs.getInstance();
-    }
+  @Before
+  public void setup() {
+    containerDefs = ContainerDefs.getInstance();
+  }
 
-    // Steps
+  // Steps
+  @When("^I make a get request to the URL '(.*)'$")
+  public void i_make_a_request_to_the_url(String url) throws Exception {
+    containerDefs.setAction(
+        containerDefs.getRestUserMockMvc().perform(get(url).accept(MediaType.APPLICATION_JSON)));
 
-    @When("^I make a get request to the URL '(.*)'$")
-    public void i_make_a_request_to_the_url(String url) throws Exception {
-	containerDefs.setAction(containerDefs.getRestUserMockMvc()
-		.perform(get(url).accept(MediaType.APPLICATION_JSON)));
+  }
 
-    }
+  @Then("^http status is unauthorized$")
+  public void the_status_is_not_unauthorized() throws Exception {
+    checkStatus(status().isUnauthorized());
+  }
 
-    @Then("^http status is unauthorized$")
-    public void the_status_is_not_found() throws Exception {
-	checkStatus(status().isUnauthorized());
-    }
+  @Then("^http status is forbidden$")
+  public void the_status_is_not_forbidden() throws Exception {
+    checkStatus(status().isForbidden());
+  }
 
-    @Then("^http status is (\\d*)$")
-    public void http_status(int status) throws Exception {
-	checkStatus(status().is(status));
+  @Then("^http status is (\\d*)$")
+  public void http_status(int status) throws Exception {
+    checkStatus(status().is(status));
 
-    }
+  }
 
-    // Utilities
-    private void checkStatus(ResultMatcher status) throws Exception {
-	containerDefs.getAction()
-		.andExpect(status);
-    }
+  // Utilities
+  private void checkStatus(ResultMatcher status) throws Exception {
+    containerDefs.getAction().andExpect(status);
+  }
 
 }
