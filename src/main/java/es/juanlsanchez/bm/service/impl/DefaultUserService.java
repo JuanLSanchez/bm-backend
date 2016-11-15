@@ -13,21 +13,28 @@ import es.juanlsanchez.bm.service.UserService;
 @Service
 public class DefaultUserService implements UserService {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    @Inject
-    public DefaultUserService(final UserRepository userRepository) {
-	this.userRepository = userRepository;
-    }
+  @Inject
+  public DefaultUserService(final UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-    public User getPrincipal() {
-	User result = null;
-	String login = SecurityUtils.getCurrentUserLogin();
-	if (!StringUtils.isEmpty(login)) {
-	    result = userRepository.findOneByLogin(login)
-		    .orElseThrow(() -> new IllegalArgumentException("Not found user"));
-	}
-	return result;
+  public User getPrincipal() {
+    User result = null;
+    String login = SecurityUtils.getCurrentUserLogin();
+    if (!StringUtils.isEmpty(login)) {
+      result = userRepository.findOneByLogin(login)
+          .orElseThrow(() -> new IllegalArgumentException("Not found user"));
     }
+    return result;
+  }
+
+  @Override
+  public User getUserWithAuthorities() {
+    User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+    user.getAuthorities().size(); // eagerly load the association
+    return user;
+  }
 
 }

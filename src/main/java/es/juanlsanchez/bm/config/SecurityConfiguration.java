@@ -20,75 +20,49 @@ import es.juanlsanchez.bm.security.jwt.TokenProvider;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Inject
-    private UserDetailsService userDetailsService;
+  @Inject
+  private UserDetailsService userDetailsService;
 
-    @Inject
-    private TokenProvider tokenProvider;
+  @Inject
+  private TokenProvider tokenProvider;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-	return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Inject
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-	auth.userDetailsService(userDetailsService)
-		.passwordEncoder(passwordEncoder());
-    }
+  @Inject
+  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-	http.csrf()
-		.disable()
-		.headers()
-		.frameOptions()
-		.disable();
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.csrf().disable().headers().frameOptions().disable();
 
-	http.sessionManagement()
-		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-	http.authorizeRequests()
-		.antMatchers("/api/register")
-		.permitAll()
-		.antMatchers("/api/activate")
-		.permitAll()
-		.antMatchers("/api/authenticate")
-		.permitAll()
-		.antMatchers("/api/account/reset_password/init")
-		.permitAll()
-		.antMatchers("/api/account/reset_password/finish")
-		.permitAll()
-		.antMatchers("/api/profile-info")
-		.permitAll();
-	http.authorizeRequests()
-		.antMatchers(Constants.START_URL_API
-			+ "/**")
-		.hasAuthority(AuthoritiesConstants.USER);
-	http.authorizeRequests()
-		.antMatchers(Constants.MANAGE_URL
-			+ "/**")
-		.hasAnyAuthority(AuthoritiesConstants.MANAGE);
-	http.authorizeRequests()
-		.antMatchers(Constants.ADMIN_URL
-			+ "/**")
-		.hasAuthority(AuthoritiesConstants.ADMIN);
-	http.authorizeRequests()
-		.anyRequest()
-		.hasAuthority(AuthoritiesConstants.ADMIN);
-	http.apply(securityConfigurerAdapter());
+    http.authorizeRequests().antMatchers("/api/authenticate").permitAll();
+    http.authorizeRequests().antMatchers(Constants.START_URL_API + "/**")
+        .hasAuthority(AuthoritiesConstants.USER);
+    http.authorizeRequests().antMatchers(Constants.MANAGE_URL + "/**")
+        .hasAnyAuthority(AuthoritiesConstants.MANAGE);
+    http.authorizeRequests().antMatchers(Constants.ADMIN_URL + "/**")
+        .hasAuthority(AuthoritiesConstants.ADMIN);
+    http.authorizeRequests().anyRequest().hasAuthority(AuthoritiesConstants.ADMIN);
+    http.apply(securityConfigurerAdapter());
 
-    }
+  }
 
-    /**
-     * Bean to use ?#{princiap} annotation y JPA
-     */
-    @Bean
-    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
-	return new SecurityEvaluationContextExtension();
-    }
+  /**
+   * Bean to use ?#{princiap} annotation y JPA
+   */
+  @Bean
+  public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+    return new SecurityEvaluationContextExtension();
+  }
 
-    private JWTConfigurer securityConfigurerAdapter() {
-	return new JWTConfigurer(tokenProvider);
-    }
+  private JWTConfigurer securityConfigurerAdapter() {
+    return new JWTConfigurer(tokenProvider);
+  }
 }

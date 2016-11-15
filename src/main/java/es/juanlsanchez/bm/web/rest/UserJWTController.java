@@ -23,28 +23,28 @@ import es.juanlsanchez.bm.web.dto.LoginDTO;
 @RequestMapping("/api")
 public class UserJWTController {
 
-    private final UserJWTManager userJWTManager;
+  private final UserJWTManager userJWTManager;
 
-    @Inject
-    public UserJWTController(final UserJWTManager userJWTManager) {
-	this.userJWTManager = userJWTManager;
+  @Inject
+  public UserJWTController(final UserJWTManager userJWTManager) {
+    this.userJWTManager = userJWTManager;
 
+  }
+
+  @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+  public ResponseEntity<?> authorize(@Valid @RequestBody LoginDTO loginDTO,
+      HttpServletResponse response) {
+
+    try {
+      JWTTokenDTO jwt = this.userJWTManager.authorize(loginDTO);
+
+      response.addHeader(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt.getIdToken());
+
+      return ResponseEntity.ok(jwt);
+    } catch (AuthenticationException exception) {
+      return new ResponseEntity<>(
+          Collections.singletonMap("AuthenticationException", exception.getLocalizedMessage()),
+          HttpStatus.UNAUTHORIZED);
     }
-
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> authorize(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response) {
-
-	try {
-	    JWTTokenDTO jwt = this.userJWTManager.authorize(loginDTO);
-
-	    response.addHeader(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer "
-		    + jwt.getIdToken());
-
-	    return ResponseEntity.ok(jwt);
-	} catch (AuthenticationException exception) {
-	    return new ResponseEntity<>(
-		    Collections.singletonMap("AuthenticationException", exception.getLocalizedMessage()),
-		    HttpStatus.UNAUTHORIZED);
-	}
-    }
+  }
 }
