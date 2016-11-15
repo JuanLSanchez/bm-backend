@@ -14,59 +14,55 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 
 import es.juanlsanchez.bm.security.AuthoritiesConstants;
+import es.juanlsanchez.bm.security.jwt.JWTConfigurer;
+import es.juanlsanchez.bm.security.jwt.TokenProvider;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Inject
-    private UserDetailsService userDetailsService;
+  @Inject
+  private UserDetailsService userDetailsService;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-	return new BCryptPasswordEncoder();
-    }
+  @Inject
+  private TokenProvider tokenProvider;
 
-    @Inject
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-	auth.userDetailsService(userDetailsService)
-		.passwordEncoder(passwordEncoder());
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-	http.httpBasic();
-	http.headers()
-		.frameOptions()
-		.disable();
+  @Inject
+  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+  }
 
-	http.sessionManagement()
-		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.csrf().disable().headers().frameOptions().disable();
 
-	http.authorizeRequests()
-		.antMatchers(Constants.START_URL_API
-			+ "/**")
-		.hasAuthority(AuthoritiesConstants.USER);
-	http.authorizeRequests()
-		.antMatchers(Constants.MANAGE_URL
-			+ "/**")
-		.hasAnyAuthority(AuthoritiesConstants.MANAGE);
-	http.authorizeRequests()
-		.antMatchers(Constants.ADMIN_URL
-			+ "/**")
-		.hasAuthority(AuthoritiesConstants.ADMIN);
-	http.authorizeRequests()
-		.anyRequest()
-		.hasAuthority(AuthoritiesConstants.ADMIN);
-	http.csrf()
-		.disable();
+    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-    }
+    http.authorizeRequests().antMatchers("/api/authenticate").permitAll();
+    http.authorizeRequests().antMatchers(Constants.START_URL_API + "/**")
+        .hasAuthority(AuthoritiesConstants.USER);
+    http.authorizeRequests().antMatchers(Constants.MANAGE_URL + "/**")
+        .hasAnyAuthority(AuthoritiesConstants.MANAGE);
+    http.authorizeRequests().antMatchers(Constants.ADMIN_URL + "/**")
+        .hasAuthority(AuthoritiesConstants.ADMIN);
+    http.authorizeRequests().anyRequest().hasAuthority(AuthoritiesConstants.ADMIN);
+    http.apply(securityConfigurerAdapter());
 
-    /**
-     * Bean to use ?#{princiap} annotation y JPA
-     */
-    @Bean
-    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
-	return new SecurityEvaluationContextExtension();
-    }
+  }
+
+  /**
+   * Bean to use ?#{princiap} annotation y JPA
+   */
+  @Bean
+  public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+    return new SecurityEvaluationContextExtension();
+  }
+
+  private JWTConfigurer securityConfigurerAdapter() {
+    return new JWTConfigurer(tokenProvider);
+  }
 }

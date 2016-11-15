@@ -10,6 +10,7 @@ public class Constants {
     public static final String SPRING_PROFILE_PRODUCTION = "pro";
     public static final String SPRING_PROFILE_FLYWAY = "flyway";
     public static final String SPRING_PROFILE_LIQUIBASE = "liquibase";
+    public static final String SPRING_PROFILE_TEST = "test";
 
     // URL api
     public static final String START_URL_API = "/api";
