@@ -15,6 +15,7 @@ public class ContainerDefs {
   private ResultActions action;
   private MockMvc restUserMockMvc;
   private HttpHeaders httpHeaders;
+  private Object responseObject;
 
   // Constructors
   private ContainerDefs() {}

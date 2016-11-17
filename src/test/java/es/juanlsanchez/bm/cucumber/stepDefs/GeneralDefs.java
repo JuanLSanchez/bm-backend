@@ -1,6 +1,7 @@
 package es.juanlsanchez.bm.cucumber.stepDefs;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import javax.inject.Inject;
@@ -15,6 +16,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import es.juanlsanchez.bm.manager.UserJWTManager;
 import es.juanlsanchez.bm.security.jwt.JWTConfigurer;
+import es.juanlsanchez.bm.unit.web.rest.TestUtil;
 import es.juanlsanchez.bm.web.dto.JWTTokenDTO;
 import es.juanlsanchez.bm.web.dto.LoginDTO;
 
@@ -22,6 +24,7 @@ public class GeneralDefs extends StepDefs {
 
   @Inject
   private ApplicationContext context;
+
   @Inject
   private UserJWTManager userJWTManager;
 
@@ -39,15 +42,26 @@ public class GeneralDefs extends StepDefs {
         "Bearer " + jwt.getIdToken());
   }
 
+  // When ------------------------------
   @When("^I make a get request to the URL '(.*)'$")
   public void i_make_a_request_to_the_url(String url) throws Exception {
     containerDefs.setAction(this.containerDefs.getRestUserMockMvc()
-        .perform(get("/api/income").accept(MediaType.APPLICATION_JSON_UTF8)
+        .perform(get(url).accept(MediaType.APPLICATION_JSON_UTF8)
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .headers(this.containerDefs.getHttpHeaders())));
 
   }
 
+  @When("^I make a post request to the URL '(.*)'$")
+  public void i_make_a_post_request_to_the_url(String url) throws Exception {
+    containerDefs.setAction(this.containerDefs.getRestUserMockMvc()
+        .perform(post(url).accept(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(this.containerDefs.getResponseObject()))
+            .headers(this.containerDefs.getHttpHeaders())));
+  }
+
+  // Then ---------------------------------------
   @Then("^http status is unauthorized$")
   public void the_status_is_not_unauthorized() throws Exception {
     checkStatus(status().isUnauthorized());
@@ -61,6 +75,11 @@ public class GeneralDefs extends StepDefs {
   @Then("^http status is ok$")
   public void the_status_is_ok() throws Exception {
     checkStatus(status().isOk());
+  }
+
+  @Then("^http status is created$")
+  public void the_status_is_created() throws Exception {
+    checkStatus(status().isCreated());
   }
 
   @Then("^http status is (\\d*)$")
