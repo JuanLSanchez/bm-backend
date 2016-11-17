@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import javax.inject.Inject;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultMatcher;
 
@@ -23,14 +22,12 @@ import es.juanlsanchez.bm.web.dto.LoginDTO;
 public class GeneralDefs extends StepDefs {
 
   @Inject
-  private ApplicationContext context;
-
-  @Inject
   private UserJWTManager userJWTManager;
 
   @Before
   public void setup() {
     this.containerDefs = ContainerDefs.getInstance();
+    this.containerDefs.setHttpHeaders(null);
   }
 
   // Steps
@@ -70,6 +67,11 @@ public class GeneralDefs extends StepDefs {
   @Then("^http status is forbidden$")
   public void the_status_is_not_forbidden() throws Exception {
     checkStatus(status().isForbidden());
+  }
+
+  @Then("^http status is bad request$")
+  public void the_status_is_bad_request() throws Exception {
+    checkStatus(status().isBadRequest());
   }
 
   @Then("^http status is ok$")

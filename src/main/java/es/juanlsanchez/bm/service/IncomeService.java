@@ -9,8 +9,10 @@ import es.juanlsanchez.bm.domain.Income;
 
 public interface IncomeService {
 
-    public Page<Income> findAllByPrincipal(Pageable pageable);
+  public Page<Income> findAllByPrincipal(Pageable pageable);
 
-    public Optional<Income> findOne(Long id);
+  public Optional<Income> findOne(Long id);
+
+  public Income create(Income income);
 
 }

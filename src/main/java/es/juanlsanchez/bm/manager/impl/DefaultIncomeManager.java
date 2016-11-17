@@ -16,25 +16,30 @@ import es.juanlsanchez.bm.web.dto.IncomeDTO;
 @Component
 public class DefaultIncomeManager implements IncomeManager {
 
-    private final IncomeMapper incomeMapper;
-    private final IncomeService incomeService;
+  private final IncomeMapper incomeMapper;
+  private final IncomeService incomeService;
 
-    @Inject
-    public DefaultIncomeManager(final IncomeMapper incomeMapper, final IncomeService incomeService) {
-	this.incomeMapper = incomeMapper;
-	this.incomeService = incomeService;
-    }
+  @Inject
+  public DefaultIncomeManager(final IncomeMapper incomeMapper, final IncomeService incomeService) {
+    this.incomeMapper = incomeMapper;
+    this.incomeService = incomeService;
+  }
 
-    @Override
-    public Page<IncomeDTO> findAllByPrincipal(Pageable pageable) {
-	return incomeService.findAllByPrincipal(pageable)
-		.map(income -> incomeMapper.incomeToIncomeDTO(income));
-    }
+  @Override
+  public Page<IncomeDTO> findAllByPrincipal(Pageable pageable) {
+    return incomeService.findAllByPrincipal(pageable)
+        .map(income -> incomeMapper.incomeToIncomeDTO(income));
+  }
 
-    @Override
-    public Optional<IncomeDTO> findOne(Long id) {
-	return incomeService.findOne(id)
-		.map(income -> incomeMapper.incomeToIncomeDTO(income));
-    }
+  @Override
+  public Optional<IncomeDTO> findOne(Long id) {
+    return incomeService.findOne(id).map(income -> incomeMapper.incomeToIncomeDTO(income));
+  }
+
+  @Override
+  public IncomeDTO create(IncomeDTO income) {
+    return incomeMapper
+        .incomeToIncomeDTO(incomeService.create(incomeMapper.incomeDTOToIncome(income)));
+  }
 
 }

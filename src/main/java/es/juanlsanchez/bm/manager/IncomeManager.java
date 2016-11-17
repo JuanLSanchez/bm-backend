@@ -9,8 +9,10 @@ import es.juanlsanchez.bm.web.dto.IncomeDTO;
 
 public interface IncomeManager {
 
-    public Page<IncomeDTO> findAllByPrincipal(Pageable pageable);
+  public Page<IncomeDTO> findAllByPrincipal(Pageable pageable);
 
-    public Optional<IncomeDTO> findOne(Long id);
+  public Optional<IncomeDTO> findOne(Long id);
+
+  public IncomeDTO create(IncomeDTO income);
 
 }

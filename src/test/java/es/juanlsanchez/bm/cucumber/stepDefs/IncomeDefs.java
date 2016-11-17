@@ -1,6 +1,7 @@
 package es.juanlsanchez.bm.cucumber.stepDefs;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import javax.inject.Inject;
 
@@ -27,8 +28,16 @@ public class IncomeDefs extends StepDefs {
 
   @Given("^a good incomeDTO$")
   public void a_good_incomeDTO() {
-    Instant incomeDate = Instant.now();
-    IncomeDTO incomeDTO = new IncomeDTO(null, incomeDate, "Income Test", "Income Test", 12.2, 21);
+    Instant incomeDate = Instant.now().plus(-10l, ChronoUnit.DAYS);
+    IncomeDTO incomeDTO =
+        new IncomeDTO(null, incomeDate, "Income Test Name", "Income Test NIF", 12.2, 21);
+    this.containerDefs.setResponseObject(incomeDTO);;
+  }
+
+  @Given("^a incomeDTO without name$")
+  public void a_incomeDTO_without_name() {
+    Instant incomeDate = Instant.now().plus(-10l, ChronoUnit.DAYS);
+    IncomeDTO incomeDTO = new IncomeDTO(null, incomeDate, null, "Income Test NIF", 12.2, 21);
     this.containerDefs.setResponseObject(incomeDTO);;
   }
 

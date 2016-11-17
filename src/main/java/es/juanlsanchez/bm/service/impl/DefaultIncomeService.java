@@ -17,24 +17,35 @@ import es.juanlsanchez.bm.service.UserService;
 @Service
 public class DefaultIncomeService implements IncomeService {
 
-    private final IncomeRepository incomeRepository;
-    private final UserService userService;
+  private final IncomeRepository incomeRepository;
+  private final UserService userService;
 
-    @Inject
-    public DefaultIncomeService(final IncomeRepository incomeRepository, final UserService userService) {
-	this.incomeRepository = incomeRepository;
-	this.userService = userService;
-    }
+  @Inject
+  public DefaultIncomeService(final IncomeRepository incomeRepository,
+      final UserService userService) {
+    this.incomeRepository = incomeRepository;
+    this.userService = userService;
+  }
 
-    @Override
-    public Page<Income> findAllByPrincipal(Pageable pageable) {
-	return incomeRepository.findAllByPrincipal(pageable);
-    }
+  @Override
+  public Page<Income> findAllByPrincipal(Pageable pageable) {
+    return incomeRepository.findAllByPrincipal(pageable);
+  }
 
-    @Override
-    public Optional<Income> findOne(Long id) {
-	User principal = userService.getPrincipal();
-	return incomeRepository.findOneByIdAndPrincipal(id, principal);
-    }
+  @Override
+  public Optional<Income> findOne(Long id) {
+    User principal = userService.getPrincipal();
+    return incomeRepository.findOneByIdAndPrincipal(id, principal);
+  }
+
+  @Override
+  public Income create(Income income) {
+    User principal = userService.getPrincipal();
+    income.setPrincipal(principal);
+
+    Income result = incomeRepository.save(income);
+
+    return result;
+  }
 
 }
