@@ -2,6 +2,7 @@ package es.juanlsanchez.bm.cucumber.stepDefs;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import javax.inject.Inject;
@@ -53,6 +54,15 @@ public class GeneralDefs extends StepDefs {
   public void i_make_a_post_request_to_the_url(String url) throws Exception {
     containerDefs.setAction(this.containerDefs.getRestUserMockMvc()
         .perform(post(url).accept(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(this.containerDefs.getResponseObject()))
+            .headers(this.containerDefs.getHttpHeaders())));
+  }
+
+  @When("^I make a put request to the URL '(.*)'$")
+  public void i_make_a_put_request_to_the_url(String url) throws Exception {
+    containerDefs.setAction(this.containerDefs.getRestUserMockMvc()
+        .perform(put(url).accept(MediaType.APPLICATION_JSON_UTF8)
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(this.containerDefs.getResponseObject()))
             .headers(this.containerDefs.getHttpHeaders())));

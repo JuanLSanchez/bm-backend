@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import es.juanlsanchez.bm.domain.Income;
+import javassist.NotFoundException;
 
 public interface IncomeService {
 
@@ -14,5 +15,7 @@ public interface IncomeService {
   public Optional<Income> findOne(Long id);
 
   public Income create(Income income);
+
+  public Income update(Income income, Long incomeId) throws NotFoundException;
 
 }

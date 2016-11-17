@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import es.juanlsanchez.bm.web.dto.IncomeDTO;
+import javassist.NotFoundException;
 
 public interface IncomeManager {
 
@@ -14,5 +15,7 @@ public interface IncomeManager {
   public Optional<IncomeDTO> findOne(Long id);
 
   public IncomeDTO create(IncomeDTO income);
+
+  public IncomeDTO update(IncomeDTO income, Long id) throws NotFoundException;
 
 }

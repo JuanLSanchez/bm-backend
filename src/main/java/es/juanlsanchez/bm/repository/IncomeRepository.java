@@ -10,12 +10,12 @@ import org.springframework.data.jpa.repository.Query;
 import es.juanlsanchez.bm.domain.Income;
 import es.juanlsanchez.bm.domain.User;
 
-public interface IncomeRepository extends JpaRepository<Income, String> {
+public interface IncomeRepository extends JpaRepository<Income, Long> {
 
-    @Query("select income from Income income "
-	    + "where income.principal.login=?#{principal.username} ")
-    public Page<Income> findAllByPrincipal(Pageable pageable);
+  @Query("select income from Income income "
+      + "where income.principal.login=?#{principal.username} ")
+  public Page<Income> findAllByPrincipal(Pageable pageable);
 
-    public Optional<Income> findOneByIdAndPrincipal(Long id, User principal);
+  public Optional<Income> findOneByIdAndPrincipal(Long id, User principal);
 
 }

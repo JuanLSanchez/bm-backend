@@ -10,21 +10,25 @@ import org.springframework.stereotype.Service;
 
 import es.juanlsanchez.bm.domain.Income;
 import es.juanlsanchez.bm.domain.User;
+import es.juanlsanchez.bm.mapper.IncomeMapper;
 import es.juanlsanchez.bm.repository.IncomeRepository;
 import es.juanlsanchez.bm.service.IncomeService;
 import es.juanlsanchez.bm.service.UserService;
+import javassist.NotFoundException;
 
 @Service
 public class DefaultIncomeService implements IncomeService {
 
   private final IncomeRepository incomeRepository;
   private final UserService userService;
+  private final IncomeMapper incomeMapper;
 
   @Inject
   public DefaultIncomeService(final IncomeRepository incomeRepository,
-      final UserService userService) {
+      final UserService userService, final IncomeMapper incomeMapper) {
     this.incomeRepository = incomeRepository;
     this.userService = userService;
+    this.incomeMapper = incomeMapper;
   }
 
   @Override
@@ -45,6 +49,17 @@ public class DefaultIncomeService implements IncomeService {
 
     Income result = incomeRepository.save(income);
 
+    return result;
+  }
+
+  @Override
+  public Income update(Income income, Long incomeId) throws NotFoundException {
+    Income incomeTarget = this.findOne(incomeId)
+        .orElseThrow(() -> new NotFoundException("Not found the income " + incomeId));
+
+    incomeMapper.updateIncome(income, incomeTarget);
+
+    Income result = incomeRepository.save(incomeTarget);
     return result;
   }
 

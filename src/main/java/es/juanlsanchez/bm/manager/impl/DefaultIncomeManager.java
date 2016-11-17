@@ -12,6 +12,7 @@ import es.juanlsanchez.bm.manager.IncomeManager;
 import es.juanlsanchez.bm.mapper.IncomeMapper;
 import es.juanlsanchez.bm.service.IncomeService;
 import es.juanlsanchez.bm.web.dto.IncomeDTO;
+import javassist.NotFoundException;
 
 @Component
 public class DefaultIncomeManager implements IncomeManager {
@@ -40,6 +41,12 @@ public class DefaultIncomeManager implements IncomeManager {
   public IncomeDTO create(IncomeDTO income) {
     return incomeMapper
         .incomeToIncomeDTO(incomeService.create(incomeMapper.incomeDTOToIncome(income)));
+  }
+
+  @Override
+  public IncomeDTO update(IncomeDTO income, Long incomeId) throws NotFoundException {
+    return incomeMapper
+        .incomeToIncomeDTO(incomeService.update(incomeMapper.incomeDTOToIncome(income), incomeId));
   }
 
 }

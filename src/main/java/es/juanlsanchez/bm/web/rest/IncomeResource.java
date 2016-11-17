@@ -26,6 +26,7 @@ import es.juanlsanchez.bm.manager.IncomeManager;
 import es.juanlsanchez.bm.web.dto.IncomeDTO;
 import es.juanlsanchez.bm.web.util.pagination.HeaderUtil;
 import es.juanlsanchez.bm.web.util.pagination.PaginationUtil;
+import javassist.NotFoundException;
 
 @RestController
 @RequestMapping(Constants.START_URL_API + "/income")
@@ -70,6 +71,19 @@ public class IncomeResource {
     return incomeManager.findOne(id)
         .map(incomeDto -> new ResponseEntity<>(incomeDto, HttpStatus.OK))
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+  }
+
+  @RequestMapping(value = "/{id}", method = RequestMethod.PUT,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<IncomeDTO> update(@Valid @RequestBody IncomeDTO income,
+      @PathVariable Long id) throws URISyntaxException, NotFoundException {
+    log.debug("REST request to update income '{}' with: {}", income);
+
+    IncomeDTO incomeCreated = incomeManager.update(income, id);
+
+    return ResponseEntity.ok()
+        .headers(HeaderUtil.createAlert("income", incomeCreated.getId().toString()))
+        .body(incomeCreated);
   }
 
 }

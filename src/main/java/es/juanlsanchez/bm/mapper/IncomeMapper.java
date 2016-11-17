@@ -2,6 +2,7 @@ package es.juanlsanchez.bm.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 
 import es.juanlsanchez.bm.domain.Income;
@@ -22,5 +23,9 @@ public interface IncomeMapper {
       @Mapping(target = "base", source = "base"), @Mapping(target = "iva", source = "iva"),
       @Mapping(target = "principal", ignore = true)})
   public Income incomeDTOToIncome(IncomeDTO income);
+
+
+  @Mappings({@Mapping(target = "id", ignore = true), @Mapping(target = "principal", ignore = true)})
+  public void updateIncome(Income income, @MappingTarget Income incomeTarget);
 
 }
