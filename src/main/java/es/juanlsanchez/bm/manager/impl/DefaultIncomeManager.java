@@ -12,29 +12,46 @@ import es.juanlsanchez.bm.manager.IncomeManager;
 import es.juanlsanchez.bm.mapper.IncomeMapper;
 import es.juanlsanchez.bm.service.IncomeService;
 import es.juanlsanchez.bm.web.dto.IncomeDTO;
+import javassist.NotFoundException;
 
 @Component
 public class DefaultIncomeManager implements IncomeManager {
 
-    private final IncomeMapper incomeMapper;
-    private final IncomeService incomeService;
+  private final IncomeMapper incomeMapper;
+  private final IncomeService incomeService;
 
-    @Inject
-    public DefaultIncomeManager(final IncomeMapper incomeMapper, final IncomeService incomeService) {
-	this.incomeMapper = incomeMapper;
-	this.incomeService = incomeService;
-    }
+  @Inject
+  public DefaultIncomeManager(final IncomeMapper incomeMapper, final IncomeService incomeService) {
+    this.incomeMapper = incomeMapper;
+    this.incomeService = incomeService;
+  }
 
-    @Override
-    public Page<IncomeDTO> findAllByPrincipal(Pageable pageable) {
-	return incomeService.findAllByPrincipal(pageable)
-		.map(income -> incomeMapper.incomeToIncomeDTO(income));
-    }
+  @Override
+  public Page<IncomeDTO> findAllByPrincipal(Pageable pageable) {
+    return incomeService.findAllByPrincipal(pageable)
+        .map(income -> incomeMapper.incomeToIncomeDTO(income));
+  }
 
-    @Override
-    public Optional<IncomeDTO> findOne(Long id) {
-	return incomeService.findOne(id)
-		.map(income -> incomeMapper.incomeToIncomeDTO(income));
-    }
+  @Override
+  public Optional<IncomeDTO> findOne(Long id) {
+    return incomeService.findOne(id).map(income -> incomeMapper.incomeToIncomeDTO(income));
+  }
+
+  @Override
+  public IncomeDTO create(IncomeDTO income) {
+    return incomeMapper
+        .incomeToIncomeDTO(incomeService.create(incomeMapper.incomeDTOToIncome(income)));
+  }
+
+  @Override
+  public IncomeDTO update(IncomeDTO income, Long incomeId) throws NotFoundException {
+    return incomeMapper
+        .incomeToIncomeDTO(incomeService.update(incomeMapper.incomeDTOToIncome(income), incomeId));
+  }
+
+  @Override
+  public void delete(Long id) throws NotFoundException {
+    incomeService.delete(id);
+  }
 
 }

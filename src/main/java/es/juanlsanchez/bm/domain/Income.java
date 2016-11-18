@@ -19,18 +19,18 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(indexes = { @Index(columnList = "incomeDate") })
+@Table(indexes = {@Index(columnList = "incomeDate")})
 public class Income extends UserObject {
-    // Attributes -------------------------------------------------------------
-    @NotNull
-    @Past
-    private Instant incomeDate;
-    @NotBlank
-    private String name;
-    private String nif;
-    private double base;
-    @Range(min = 0, max = 100)
-    private int iva;
+  // Attributes -------------------------------------------------------------
+  @NotNull
+  @Past
+  private Instant incomeDate;
+  @NotBlank
+  private String name;
+  private String nif;
+  private double base;
+  @Range(min = 0, max = 100)
+  private int iva;
 
-    // Relationships------------------------------------------------------------
+  // Relationships------------------------------------------------------------
 }
