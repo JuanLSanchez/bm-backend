@@ -3,6 +3,7 @@ package es.juanlsanchez.bm.service.impl;
 import java.util.Optional;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import es.juanlsanchez.bm.service.UserService;
 import javassist.NotFoundException;
 
 @Service
+@Transactional
 public class DefaultIncomeService implements IncomeService {
 
   private final IncomeRepository incomeRepository;
