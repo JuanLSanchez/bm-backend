@@ -18,4 +18,6 @@ public interface IncomeService {
 
   public Income update(Income income, Long incomeId) throws NotFoundException;
 
+  public void delete(Long id) throws NotFoundException;
+
 }

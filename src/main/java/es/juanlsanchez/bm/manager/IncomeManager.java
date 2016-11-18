@@ -18,4 +18,6 @@ public interface IncomeManager {
 
   public IncomeDTO update(IncomeDTO income, Long id) throws NotFoundException;
 
+  public void delete(Long id) throws NotFoundException;
+
 }

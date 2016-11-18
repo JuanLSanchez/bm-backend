@@ -77,13 +77,25 @@ public class IncomeResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<IncomeDTO> update(@Valid @RequestBody IncomeDTO income,
       @PathVariable Long id) throws URISyntaxException, NotFoundException {
-    log.debug("REST request to update income '{}' with: {}", income);
+    log.debug("REST request to update income '{}' with: {}", id, income);
 
     IncomeDTO incomeCreated = incomeManager.update(income, id);
 
     return ResponseEntity.ok()
         .headers(HeaderUtil.createAlert("income", incomeCreated.getId().toString()))
         .body(incomeCreated);
+  }
+
+  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Void> delete(@PathVariable Long id)
+      throws URISyntaxException, NotFoundException {
+    log.debug("REST request to delete income '{}' with: {}", id);
+
+    incomeManager.delete(id);
+
+    return ResponseEntity.ok()
+        .headers(HeaderUtil.createEntityDeletionAlert("schedule", id.toString())).build();
   }
 
 }

@@ -63,4 +63,10 @@ public class DefaultIncomeService implements IncomeService {
     return result;
   }
 
+  @Override
+  public void delete(Long id) throws NotFoundException {
+    this.findOne(id).orElseThrow(() -> new NotFoundException("Not found the income " + id));
+    incomeRepository.delete(id);
+  }
+
 }

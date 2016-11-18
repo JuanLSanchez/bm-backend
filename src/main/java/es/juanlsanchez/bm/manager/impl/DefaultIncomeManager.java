@@ -49,4 +49,9 @@ public class DefaultIncomeManager implements IncomeManager {
         .incomeToIncomeDTO(incomeService.update(incomeMapper.incomeDTOToIncome(income), incomeId));
   }
 
+  @Override
+  public void delete(Long id) throws NotFoundException {
+    incomeService.delete(id);
+  }
+
 }

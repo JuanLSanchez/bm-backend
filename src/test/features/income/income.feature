@@ -89,7 +89,7 @@ Feature: Income management
     And with the user 'user001' and password 'password'
     And count the user's incomes
     When I make a delete request to the URL '/api/income/7'
-    Then http status is no content
+    Then http status is ok
     Then the income 7 is delete
     Then count the user's incomes and it has increse -1
 
