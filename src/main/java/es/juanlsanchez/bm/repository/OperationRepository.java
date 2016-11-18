@@ -8,16 +8,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.juanlsanchez.bm.domain.Invoice;
+import es.juanlsanchez.bm.domain.Operation;
 import es.juanlsanchez.bm.domain.User;
 
 @Transactional(rollbackFor = Throwable.class)
-public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
+public interface OperationRepository extends JpaRepository<Operation, Long> {
 
-  @Query("select invoice from Invoice invoice "
-      + "where invoice.principal.login=?#{principal.username} ")
-  public Page<Invoice> findAllByPrincipal(Pageable pageable);
+  @Query("select operation from Operation operation "
+      + "where operation.principal.login=?#{principal.username} ")
+  public Page<Operation> findAllByPrincipal(Pageable pageable);
 
-  public Optional<Invoice> findOneByIdAndPrincipal(Long id, User principal);
+  public Optional<Operation> findOneByIdAndPrincipal(Long id, User principal);
 
 }

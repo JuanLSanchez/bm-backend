@@ -48,13 +48,6 @@ public class InvoiceDefs extends StepDefs {
     this.containerDefs.setResponseObject(invoiceDTO);;
   }
 
-  @Given("^a invoiceDTO without name$")
-  public void a_invoiceDTO_without_name() {
-    Instant dateBuy = Instant.now().plus(-10l, ChronoUnit.DAYS);
-    InvoiceDTO invoiceDTO = new InvoiceDTO(null, "1adf1a323153asd", dateBuy, 1L, 1L);
-    this.containerDefs.setResponseObject(invoiceDTO);;
-  }
-
   @Given("^the invoice resource$")
   public void the_invoice_resource() {
 
@@ -90,8 +83,10 @@ public class InvoiceDefs extends StepDefs {
       throw new IllegalArgumentException("Not found InvoiceDTO in the container");
     }
 
-    assertThat(invoiceInDB).isEqualToComparingOnlyGivenFields(invoice, "base", "invoiceDate",
-        "name", "nif", "iva");
+    assertThat(invoiceInDB).isNotNull();
+    assertThat(invoiceInDB).isEqualToComparingOnlyGivenFields(invoice, "number", "dateBuy");
+    assertThat(invoiceInDB.getSupplier().getId()).isEqualTo(invoice.getSupplierId());
+    assertThat(invoiceInDB.getOperation().getId()).isEqualTo(invoice.getOperationId());
   }
 
   @Then("^the invoice (\\d*) is updating$")
@@ -105,8 +100,9 @@ public class InvoiceDefs extends StepDefs {
     }
 
     assertThat(invoiceInDB).isNotNull();
-    assertThat(invoiceInDB).isEqualToComparingOnlyGivenFields(invoice, "base", "invoiceDate",
-        "name", "nif", "iva");
+    assertThat(invoiceInDB).isEqualToComparingOnlyGivenFields(invoice, "number", "dateBuy");
+    assertThat(invoiceInDB.getSupplier().getId()).isEqualTo(invoice.getSupplierId());
+    assertThat(invoiceInDB.getOperation().getId()).isEqualTo(invoice.getOperationId());
   }
 
   @Then("^count the user's invoices and it has increse (-?\\d*)$")
