@@ -4,6 +4,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import es.juanlsanchez.bm.web.dto.LoginDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ public class ContainerDefs {
   private MockMvc restUserMockMvc;
   private HttpHeaders httpHeaders;
   private Object responseObject;
+  private LoginDTO loginDTO;
 
   // Constructors
   private ContainerDefs() {}

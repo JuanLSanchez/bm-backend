@@ -51,6 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .hasAuthority(AuthoritiesConstants.ADMIN);
     http.authorizeRequests().anyRequest().hasAuthority(AuthoritiesConstants.ADMIN);
     http.apply(securityConfigurerAdapter());
+    http.exceptionHandling();
 
   }
 

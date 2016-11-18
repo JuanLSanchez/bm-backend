@@ -1,5 +1,6 @@
 package es.juanlsanchez.bm.cucumber.stepDefs;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -35,9 +36,12 @@ public class GeneralDefs extends StepDefs {
   @Given("with the user '(.*)' and password '(.*)'$")
   public void with_the_user_and_password(String login, String password) {
 
-    JWTTokenDTO jwt = this.userJWTManager.authorize(new LoginDTO(login, password, true));
+    LoginDTO loginDTO = new LoginDTO(login, password, true);
+    this.containerDefs.setLoginDTO(loginDTO);
+    JWTTokenDTO jwt = this.userJWTManager.authorize(loginDTO);
     this.containerDefs.getHttpHeaders().add(JWTConfigurer.AUTHORIZATION_HEADER,
         "Bearer " + jwt.getIdToken());
+
   }
 
   // When ------------------------------
@@ -68,6 +72,14 @@ public class GeneralDefs extends StepDefs {
             .headers(this.containerDefs.getHttpHeaders())));
   }
 
+  @When("I make a delete request to the URL '(.*)'$")
+  public void i_make_a_delte_request_to_the_url(String url) throws Exception {
+    containerDefs.setAction(this.containerDefs.getRestUserMockMvc()
+        .perform(delete(url).accept(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .headers(this.containerDefs.getHttpHeaders())));
+  }
+
   // Then ---------------------------------------
   @Then("^http status is unauthorized$")
   public void the_status_is_not_unauthorized() throws Exception {
@@ -94,10 +106,14 @@ public class GeneralDefs extends StepDefs {
     checkStatus(status().isCreated());
   }
 
+  @Then("^http status is no content$")
+  public void the_status_is_no_content() throws Exception {
+    checkStatus(status().isNoContent());
+  }
+
   @Then("^http status is (\\d*)$")
   public void http_status(int status) throws Exception {
     checkStatus(status().is(status));
-
   }
 
   // Utilities

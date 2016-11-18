@@ -9,8 +9,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -18,6 +20,7 @@ import cucumber.api.java.en.Then;
 import es.juanlsanchez.bm.domain.Income;
 import es.juanlsanchez.bm.repository.IncomeRepository;
 import es.juanlsanchez.bm.web.dto.IncomeDTO;
+import es.juanlsanchez.bm.web.error.ExceptionTranslator;
 import es.juanlsanchez.bm.web.rest.IncomeResource;
 
 public class IncomeDefs extends StepDefs {
@@ -28,6 +31,8 @@ public class IncomeDefs extends StepDefs {
   private FilterChainProxy springSecurityFilterChain;
   @Inject
   private IncomeRepository incomeRepository;
+
+  private long numOfIncomes;
 
   @Before
   public void setup() {
@@ -53,10 +58,24 @@ public class IncomeDefs extends StepDefs {
 
   @Given("^the income resource$")
   public void the_income_resource() {
+
+    final StaticApplicationContext applicationContext = new StaticApplicationContext();
+    applicationContext.registerSingleton("exceptionHandler", ExceptionTranslator.class);
+
+    final WebMvcConfigurationSupport webMvcConfigurationSupport = new WebMvcConfigurationSupport();
+    webMvcConfigurationSupport.setApplicationContext(applicationContext);
+
     this.containerDefs.setRestUserMockMvc(MockMvcBuilders.standaloneSetup(this.incomeResource)
         .setCustomArgumentResolvers(this.pageableArgumentResolver)
+        .setHandlerExceptionResolvers(webMvcConfigurationSupport.handlerExceptionResolver())
         .addFilters(springSecurityFilterChain).build());
     MockitoAnnotations.initMocks(this);
+  }
+
+  @Given("^count the user's incomes$")
+  public void count_the_user_incomes() {
+    this.numOfIncomes = incomeRepository.findAll().stream().filter(income -> income.getPrincipal()
+        .getLogin().equals(this.containerDefs.getLoginDTO().getUsername())).count();
   }
 
   // Then ----------------------------------
@@ -89,6 +108,21 @@ public class IncomeDefs extends StepDefs {
     assertThat(incomeInDB).isNotNull();
     assertThat(incomeInDB).isEqualToComparingOnlyGivenFields(income, "base", "incomeDate", "name",
         "nif", "iva");
+  }
+
+  @Then("^count the user's incomes and it has increse (-?\\d*)$")
+  public void count_the_user_incomes_and_it_has_increase(long increment) {
+    long now = incomeRepository.findAll().stream().filter(income -> income.getPrincipal().getLogin()
+        .equals(this.containerDefs.getLoginDTO().getUsername())).count();
+
+    assertThat(now).isEqualTo(this.numOfIncomes + increment);
+  }
+
+  @Then("^the income (\\d*) is delete$")
+  public void the_income_is_delete(long id) {
+    Income income = incomeRepository.findOne(id);
+
+    assertThat(income).isNull();
   }
 
 }
