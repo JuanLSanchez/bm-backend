@@ -41,10 +41,24 @@ public class InvoiceDefs extends StepDefs {
 
 
   // Given --------------------------------------
-  @Given("^a good invoiceDTO$")
-  public void a_good_invoiceDTO() {
+  @Given("^a good invoiceDTO for user001$")
+  public void a_good_invoiceDTO_for_user001() {
     Instant dateBuy = Instant.now().plus(-10l, ChronoUnit.DAYS);
     InvoiceDTO invoiceDTO = new InvoiceDTO(null, "1adf1a323153asd", dateBuy, 1L, 1L);
+    this.containerDefs.setResponseObject(invoiceDTO);;
+  }
+
+  @Given("^a invoiceDTO for user001 with the supplier of other user$")
+  public void a_invoiceDTO_for_user001_with_the_supplier_of_other_user() {
+    Instant dateBuy = Instant.now().plus(-11l, ChronoUnit.DAYS);
+    InvoiceDTO invoiceDTO = new InvoiceDTO(null, "asdfsdf", dateBuy, 40L, 1L);
+    this.containerDefs.setResponseObject(invoiceDTO);;
+  }
+
+  @Given("^a invoiceDTO for user001 with the operation of other user$")
+  public void a_invoiceDTO_for_user001_with_the_operation_of_other_user() {
+    Instant dateBuy = Instant.now().plus(-12l, ChronoUnit.DAYS);
+    InvoiceDTO invoiceDTO = new InvoiceDTO(null, "asdfsafd", dateBuy, 1L, 6L);
     this.containerDefs.setResponseObject(invoiceDTO);;
   }
 
@@ -103,6 +117,21 @@ public class InvoiceDefs extends StepDefs {
     assertThat(invoiceInDB).isEqualToComparingOnlyGivenFields(invoice, "number", "dateBuy");
     assertThat(invoiceInDB.getSupplier().getId()).isEqualTo(invoice.getSupplierId());
     assertThat(invoiceInDB.getOperation().getId()).isEqualTo(invoice.getOperationId());
+  }
+
+  @Then("^the invoice (\\d*) is not updating$")
+  public void the_invoice_is_not_updating(Long id) {
+    Invoice invoiceInDB = invoiceRepository.findOne(id);
+    InvoiceDTO invoice;
+    if (this.containerDefs.getResponseObject() instanceof InvoiceDTO) {
+      invoice = (InvoiceDTO) this.containerDefs.getResponseObject();
+    } else {
+      throw new IllegalArgumentException("Not found InvoiceDTO in the container");
+    }
+
+    assertThat(invoiceInDB).isNotNull();
+    assertThat(invoiceInDB.getNumber()).isNotEqualTo(invoice.getNumber());
+    assertThat(invoiceInDB.getDateBuy()).isNotEqualTo(invoice.getDateBuy());
   }
 
   @Then("^count the user's invoices and it has increse (-?\\d*)$")

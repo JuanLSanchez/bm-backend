@@ -73,8 +73,6 @@ public class DefaultInvoiceService implements InvoiceService {
     Invoice invoiceTarget = this.findOne(invoiceId)
         .orElseThrow(() -> new NotFoundException("Not found the invoice " + invoiceId));
 
-    this.invoiceMapper.updateInvoice(invoice, invoiceTarget);
-
     if (!invoiceTarget.getSupplier().getId().equals(supplierId)) {
       invoiceTarget.setSupplier(this.supplierService.getOne(supplierId));
     }
@@ -82,6 +80,8 @@ public class DefaultInvoiceService implements InvoiceService {
     if (!invoiceTarget.getOperation().getId().equals(operationId)) {
       invoiceTarget.setOperation(this.operationService.getOne(operationId));
     }
+
+    this.invoiceMapper.updateInvoice(invoice, invoiceTarget);
 
     Invoice result = this.invoiceRepository.save(invoiceTarget);
     return result;

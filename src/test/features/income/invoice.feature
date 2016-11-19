@@ -15,14 +15,14 @@ Feature: Invoice management
   # Create
   Scenario: Create invoice without user
     Given the invoice resource
-    And a good invoiceDTO
+    And a good invoiceDTO for user001
     When I make a post request to the URL '/api/invoice'
     Then http status is forbidden
 
   Scenario: Create invoice with user
     Given the invoice resource
     And with the user 'user001' and password 'password'
-    And a good invoiceDTO
+    And a good invoiceDTO for user001
     And count the user's invoices
     When I make a post request to the URL '/api/invoice'
     Then http status is created
@@ -32,24 +32,44 @@ Feature: Invoice management
   # Update
   Scenario: Update invoice without user
     Given the invoice resource
-    And a good invoiceDTO
+    And a good invoiceDTO for user001
     When I make a put request to the URL '/api/invoice/4'
     Then http status is forbidden
 
   Scenario: Update invoice with user
     Given the invoice resource
     And with the user 'user001' and password 'password'
-    And a good invoiceDTO
+    And a good invoiceDTO for user001
     And count the user's invoices
     When I make a put request to the URL '/api/invoice/4'
     Then http status is ok
     Then the invoice 4 is updating
     Then count the user's invoices and it has increse 0
 
+  Scenario: Update invoice with user and operation of other user
+    Given the invoice resource
+    And with the user 'user001' and password 'password'
+    And a invoiceDTO for user001 with the operation of other user
+    And count the user's invoices
+    When I make a put request to the URL '/api/invoice/4'
+    Then http status is bad request
+    Then the invoice 4 is not updating
+    Then count the user's invoices and it has increse 0
+
+  Scenario: Update invoice with user and supplier of other user
+    Given the invoice resource
+    And with the user 'user001' and password 'password'
+    And a invoiceDTO for user001 with the supplier of other user
+    And count the user's invoices
+    When I make a put request to the URL '/api/invoice/4'
+    Then http status is bad request
+    Then the invoice 4 is not updating
+    Then count the user's invoices and it has increse 0
+
   Scenario: Update invoice with other user
     Given the invoice resource
     And with the user 'user002' and password 'password'
-    And a good invoiceDTO
+    And a good invoiceDTO for user001
     And count the user's invoices
     When I make a put request to the URL '/api/invoice/4'
     Then http status is bad request
@@ -58,7 +78,7 @@ Feature: Invoice management
   Scenario: Update invoice not created with user
     Given the invoice resource
     And with the user 'user002' and password 'password'
-    And a good invoiceDTO
+    And a good invoiceDTO for user001
     And count the user's invoices
     When I make a put request to the URL '/api/invoice/700000'
     Then http status is bad request
