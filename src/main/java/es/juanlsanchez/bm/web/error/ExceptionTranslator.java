@@ -16,11 +16,26 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.util.NestedServletException;
 
 import javassist.NotFoundException;
 
 @ControllerAdvice
 public class ExceptionTranslator {
+
+  @ExceptionHandler(NestedServletException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public ErrorDTO AssertionErrorError(NestedServletException ex) {
+    return new ErrorDTO(ErrorConstants.ERR_ASSERTION_ERROR, ex.getMessage());
+  }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public ErrorDTO IllegalArgumentError(IllegalArgumentException ex) {
+    return new ErrorDTO(ErrorConstants.ERR_ILLEGAL_ARGUMENT, ex.getMessage());
+  }
 
   @ExceptionHandler(NotFoundException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
