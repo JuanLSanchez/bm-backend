@@ -29,6 +29,24 @@ Feature: Invoice management
     Then the invoice is creating
     Then count the user's invoices and it has increse 1
 
+  Scenario: Create invoice with user and operation of other user
+    Given the invoice resource
+    And with the user 'user001' and password 'password'
+    And a invoiceDTO for user001 with the operation of other user
+    And count the user's invoices
+    When I make a post request to the URL '/api/invoice'
+    Then http status is bad request
+    Then count the user's invoices and it has increse 0
+
+  Scenario: Create invoice with user and supplier of other user
+    Given the invoice resource
+    And with the user 'user001' and password 'password'
+    And a invoiceDTO for user001 with the supplier of other user
+    And count the user's invoices
+    When I make a post request to the URL '/api/invoice'
+    Then http status is bad request
+    Then count the user's invoices and it has increse 0
+
   # Update
   Scenario: Update invoice without user
     Given the invoice resource
