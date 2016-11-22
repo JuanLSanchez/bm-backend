@@ -66,12 +66,12 @@ Feature: Operation management
 
   Scenario: Update operation with other user
     Given the operation resource
-    And with the user 'user002' and password 'password'
+    And with the user 'user001' and password 'password'
     And a good operationDTO for the user001
     And count the user's operations
-    When I make a put request to the URL '/api/operation/1'
+    When I make a put request to the URL '/api/operation/3'
     Then http status is bad request
-    Then the operation 1 is not updating
+    Then the operation 3 is not updating
     Then count the user's operations and it has increse 0
 
   Scenario: Update operation not created with user
@@ -81,17 +81,16 @@ Feature: Operation management
     And count the user's operations
     When I make a put request to the URL '/api/operation/700000'
     Then http status is bad request
-    Then the operation 1 is not updating
     Then count the user's operations and it has increse 0
 
   Scenario: Update operation without name with user
     Given the operation resource
-    And with the user 'user001' and password 'password'
+    And with the user 'user002' and password 'password'
     And a operationDTO for the user001 without name
     And count the user's operations
-    When I make a put request to the URL '/api/operation/1'
+    When I make a put request to the URL '/api/operation/3'
     Then http status is bad request
-    Then the operation 1 is not updating
+    Then the operation 3 is not updating
     Then count the user's operations and it has increse 0
 
   Scenario: Update operation with user and the section of other user
@@ -116,7 +115,7 @@ Feature: Operation management
     And count the user's operations
     When I make a delete request to the URL '/api/operation/9'
     Then http status is ok
-    Then the operation 1 is delete
+    Then the operation 9 is delete
     Then count the user's operations and it has increse -1
 
   Scenario: Delete operation with other user

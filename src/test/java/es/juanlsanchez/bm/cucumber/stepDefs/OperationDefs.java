@@ -94,7 +94,7 @@ public class OperationDefs extends StepDefs {
 
     assertThat(operationInDB).isNotNull();
     assertThat(operationInDB.getName()).isEqualTo(operation.getName());
-    assertThat(operationInDB.getSection().getId()).isEqualTo(operation.getSection());
+    assertThat(operationInDB.getSection().getId()).isEqualTo(operation.getSectionId());
   }
 
   @Then("^the operation (\\d*) is updating$")
@@ -109,7 +109,7 @@ public class OperationDefs extends StepDefs {
 
     assertThat(operationInDB).isNotNull();
     assertThat(operationInDB.getName()).isEqualTo(operation.getName());
-    assertThat(operationInDB.getSection().getId()).isEqualTo(operation.getSection());
+    assertThat(operationInDB.getSection().getId()).isEqualTo(operation.getSectionId());
   }
 
   @Then("^the operation (\\d*) is not updating$")
@@ -124,7 +124,7 @@ public class OperationDefs extends StepDefs {
 
     assertThat(operationInDB).isNotNull();
     assertThat(operationInDB.getName()).isNotEqualTo(operation.getName());
-    assertThat(operationInDB.getSection().getId()).isNotEqualTo(operation.getSection());
+    assertThat(operationInDB.getSection().getId()).isNotEqualTo(operation.getSectionId());
   }
 
   @Then("^count the user's operations and it has increse (-?\\d*)$")
