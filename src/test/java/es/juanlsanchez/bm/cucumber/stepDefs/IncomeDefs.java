@@ -12,8 +12,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
+import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -37,6 +39,12 @@ public class IncomeDefs extends StepDefs {
   @Before
   public void setup() {
     this.containerDefs = ContainerDefs.getInstance();
+    transaction = transactionManager.getTransaction(new DefaultTransactionDefinition());
+  }
+
+  @After
+  public void afterScenario() {
+    transactionManager.rollback(transaction);
   }
 
 
