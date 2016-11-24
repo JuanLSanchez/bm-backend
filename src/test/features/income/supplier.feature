@@ -57,12 +57,12 @@ Feature: Supplier management
 
   Scenario: Update supplier with other user
     Given the supplier resource
-    And with the user 'user001' and password 'password'
+    And with the user 'user002' and password 'password'
     And a good supplierDTO for the user001
     And count the user's suppliers
-    When I make a put request to the URL '/api/supplier/3'
+    When I make a put request to the URL '/api/supplier/1'
     Then http status is bad request
-    Then the supplier 3 is not updating
+    Then the supplier 1 is not updating
     Then count the user's suppliers and it has increse 0
 
   Scenario: Update supplier not created with user
