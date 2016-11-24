@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -46,8 +45,6 @@ public class JWTTest {
 
   @Inject
   private UserJWTController userJWTController;
-  @Inject
-  private FilterChainProxy springSecurityFilterChain;
 
   private MockMvc mvc;
 
