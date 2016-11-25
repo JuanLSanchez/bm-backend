@@ -12,6 +12,24 @@ Feature: InvoiceLine management
     When I make a get request to the URL '/api/invoice_line'
     Then http status is ok
 
+  # List of invoice
+  Scenario: List invoiceLine without user
+    Given the invoiceLine resource
+    When I make a get request to the URL '/api/invoice_line/invoice/4'
+    Then http status is forbidden
+
+  Scenario: List invoiceLine with user
+    Given the invoiceLine resource
+    And with the user 'user001' and password 'password'
+    When I make a get request to the URL '/api/invoice_line/invoice/4'
+    Then http status is ok
+
+  Scenario: List invoiceLine with other user
+    Given the invoiceLine resource
+    And with the user 'user002' and password 'password'
+    When I make a get request to the URL '/api/invoice_line/invoice/4'
+    Then http status is bad request
+
   # Create
   Scenario: Create invoiceLine without user
     Given the invoiceLine resource
@@ -190,7 +208,7 @@ Feature: InvoiceLine management
     And count the user's invoiceLines
     When I make a delete request to the URL '/api/invoice_line/1'
     Then http status is ok
-    Then the invoiceLine 4 is delete
+    Then the invoiceLine 1 is delete
     Then count the user's invoiceLines and it has increse -1
 
   Scenario: Delete invoiceLine with other user

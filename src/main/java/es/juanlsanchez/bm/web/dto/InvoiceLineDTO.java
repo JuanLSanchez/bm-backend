@@ -22,10 +22,10 @@ public class InvoiceLineDTO {
   @JsonProperty("iva")
   @Range(min = 0, max = 100)
   @NotNull
-  private int iva;
+  private Integer iva;
   @JsonProperty("base")
   @NotNull
-  private double base;
+  private Double base;
   @JsonProperty("invoiceId")
   @NotNull
   private Long invoiceId;

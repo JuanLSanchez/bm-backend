@@ -49,7 +49,7 @@ public class InvoiceLineDefs extends StepDefs {
   // Given --------------------------------------
   @Given("^a good invoiceLineDTO for user001$")
   public void a_good_invoiceLineDTO_for_user001() {
-    InvoiceLineDTO invoiceLineDTO = new InvoiceLineDTO(null, 22, 14.5, 1L);
+    InvoiceLineDTO invoiceLineDTO = new InvoiceLineDTO(null, 22, 14.5, 4L);
     this.containerDefs.setResponseObject(invoiceLineDTO);
   }
 
@@ -61,13 +61,13 @@ public class InvoiceLineDefs extends StepDefs {
 
   @Given("^a invoiceLineDTO for user001 without iva$")
   public void a_invoiceLineDTO_for_user001_without_iva() {
-    InvoiceLineDTO invoiceLineDTO = InvoiceLineDTO.builder().base(14.5).invoiceId(1L).build();
+    InvoiceLineDTO invoiceLineDTO = InvoiceLineDTO.builder().base(14.5).invoiceId(4L).build();
     this.containerDefs.setResponseObject(invoiceLineDTO);
   }
 
   @Given("^a invoiceLineDTO for user001 without base$")
   public void a_invoiceLineDTO_for_user001_without_base() {
-    InvoiceLineDTO invoiceLineDTO = InvoiceLineDTO.builder().iva(21).invoiceId(1L).build();
+    InvoiceLineDTO invoiceLineDTO = InvoiceLineDTO.builder().iva(21).invoiceId(4L).build();
     this.containerDefs.setResponseObject(invoiceLineDTO);
   }
 
@@ -79,13 +79,13 @@ public class InvoiceLineDefs extends StepDefs {
 
   @Given("^a invoiceLineDTO for user001 with iva great that 100$")
   public void a_invoiceLineDTO_for_user001_with_iva_great_that_100() {
-    InvoiceLineDTO invoiceLineDTO = new InvoiceLineDTO(null, 101, 14.5, 1L);
+    InvoiceLineDTO invoiceLineDTO = new InvoiceLineDTO(null, 101, 14.5, 4L);
     this.containerDefs.setResponseObject(invoiceLineDTO);
   }
 
   @Given("^a invoiceLineDTO for user001 with iva less that 0$")
   public void a_invoiceLineDTO_for_user001_with_iva_less_that_0() {
-    InvoiceLineDTO invoiceLineDTO = new InvoiceLineDTO(null, -1, 14.5, 1L);
+    InvoiceLineDTO invoiceLineDTO = new InvoiceLineDTO(null, -1, 14.5, 4L);
     this.containerDefs.setResponseObject(invoiceLineDTO);
   }
 
@@ -157,7 +157,6 @@ public class InvoiceLineDefs extends StepDefs {
     }
 
     assertThat(invoiceLineInDB).isNotNull();
-    assertThat(invoiceLineInDB).isEqualToComparingOnlyGivenFields(invoiceLine, "iva", "base");
     assertThat(invoiceLineInDB.getBase()).isNotEqualTo(invoiceLine.getBase());
     assertThat(invoiceLineInDB.getIva()).isNotEqualTo(invoiceLine.getIva());
     assertThat(invoiceLineInDB.getInvoice().getId()).isNotEqualTo(invoiceLine.getInvoiceId());

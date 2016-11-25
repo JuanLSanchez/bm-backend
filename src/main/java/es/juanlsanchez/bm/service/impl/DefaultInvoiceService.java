@@ -70,8 +70,7 @@ public class DefaultInvoiceService implements InvoiceService {
   @Override
   public Invoice update(Invoice invoice, Long invoiceId, Long operationId, Long supplierId)
       throws NotFoundException {
-    Invoice invoiceTarget = this.findOne(invoiceId)
-        .orElseThrow(() -> new NotFoundException("Not found the invoice " + invoiceId));
+    Invoice invoiceTarget = this.getOne(invoiceId);
 
     if (!invoiceTarget.getSupplier().getId().equals(supplierId)) {
       invoiceTarget.setSupplier(this.supplierService.getOne(supplierId));
@@ -89,8 +88,13 @@ public class DefaultInvoiceService implements InvoiceService {
 
   @Override
   public void delete(Long id) throws NotFoundException {
-    this.findOne(id).orElseThrow(() -> new NotFoundException("Not found the invoice " + id));
+    this.getOne(id);
     invoiceRepository.delete(id);
+  }
+
+  @Override
+  public Invoice getOne(Long id) throws NotFoundException {
+    return this.findOne(id).orElseThrow(() -> new NotFoundException("Not found the invoice " + id));
   }
 
 }
