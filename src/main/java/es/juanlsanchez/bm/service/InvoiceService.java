@@ -22,4 +22,6 @@ public interface InvoiceService {
   public Invoice create(Invoice invoice, Long operationId, Long supplierId)
       throws NotFoundException;
 
+  public Invoice getOne(Long id) throws NotFoundException;
+
 }
