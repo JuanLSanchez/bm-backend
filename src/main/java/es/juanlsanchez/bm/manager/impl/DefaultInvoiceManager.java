@@ -12,6 +12,7 @@ import es.juanlsanchez.bm.manager.InvoiceManager;
 import es.juanlsanchez.bm.mapper.InvoiceMapper;
 import es.juanlsanchez.bm.service.InvoiceService;
 import es.juanlsanchez.bm.web.dto.InvoiceDTO;
+import es.juanlsanchez.bm.web.dto.RangeDTO;
 import javassist.NotFoundException;
 
 @Component
@@ -55,6 +56,11 @@ public class DefaultInvoiceManager implements InvoiceManager {
   @Override
   public void delete(Long id) throws NotFoundException {
     invoiceService.delete(id);
+  }
+
+  @Override
+  public RangeDTO getRangeByPrincipal() {
+    return this.invoiceService.getRangeByPrincipal();
   }
 
 }

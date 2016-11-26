@@ -12,4 +12,7 @@ spring:
     name: bm
   profiles:
     active: test,dev,h2,liquibase
+  jackson.serialization:
+    write_dates_as_timestamps: false
+    write_date_timestamps_as_nanoseconds: false
 management.context-path: /manage

@@ -15,6 +15,7 @@ import es.juanlsanchez.bm.mapper.IncomeMapper;
 import es.juanlsanchez.bm.repository.IncomeRepository;
 import es.juanlsanchez.bm.service.IncomeService;
 import es.juanlsanchez.bm.service.UserService;
+import es.juanlsanchez.bm.web.dto.RangeDTO;
 import javassist.NotFoundException;
 
 @Service
@@ -69,6 +70,12 @@ public class DefaultIncomeService implements IncomeService {
   public void delete(Long id) throws NotFoundException {
     this.findOne(id).orElseThrow(() -> new NotFoundException("Not found the income " + id));
     incomeRepository.delete(id);
+  }
+
+  @Override
+  public RangeDTO getRangeByPrincipal() {
+    User principal = this.userService.getPrincipal();
+    return this.incomeRepository.getRangeByPrincipal(principal);
   }
 
 }
