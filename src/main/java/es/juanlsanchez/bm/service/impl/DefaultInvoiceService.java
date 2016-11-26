@@ -17,6 +17,7 @@ import es.juanlsanchez.bm.service.InvoiceService;
 import es.juanlsanchez.bm.service.OperationService;
 import es.juanlsanchez.bm.service.SupplierService;
 import es.juanlsanchez.bm.service.UserService;
+import es.juanlsanchez.bm.web.dto.RangeDTO;
 import javassist.NotFoundException;
 
 @Service
@@ -95,6 +96,12 @@ public class DefaultInvoiceService implements InvoiceService {
   @Override
   public Invoice getOne(Long id) throws NotFoundException {
     return this.findOne(id).orElseThrow(() -> new NotFoundException("Not found the invoice " + id));
+  }
+
+  @Override
+  public RangeDTO getRangeByPrincipal() {
+    User principal = this.userService.getPrincipal();
+    return this.invoiceRepository.getRangeByPrincipal(principal);
   }
 
 }

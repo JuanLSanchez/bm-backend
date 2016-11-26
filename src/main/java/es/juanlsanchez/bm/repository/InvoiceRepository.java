@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.juanlsanchez.bm.domain.Invoice;
 import es.juanlsanchez.bm.domain.User;
+import es.juanlsanchez.bm.web.dto.RangeDTO;
 
 @Transactional(rollbackFor = Throwable.class)
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
@@ -19,5 +20,9 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
   public Page<Invoice> findAllByPrincipal(Pageable pageable);
 
   public Optional<Invoice> findOneByIdAndPrincipal(Long id, User principal);
+
+  @Query("select new es.juanlsanchez.bm.web.dto.RangeDTO(min(invoice.dateBuy), max(invoice.dateBuy)) "
+      + "from Invoice invoice where invoice.principal.login=?#{principal.username}")
+  public RangeDTO getRangeByPrincipal(User principal);
 
 }

@@ -12,6 +12,7 @@ import es.juanlsanchez.bm.manager.IncomeManager;
 import es.juanlsanchez.bm.mapper.IncomeMapper;
 import es.juanlsanchez.bm.service.IncomeService;
 import es.juanlsanchez.bm.web.dto.IncomeDTO;
+import es.juanlsanchez.bm.web.dto.RangeDTO;
 import javassist.NotFoundException;
 
 @Component
@@ -51,7 +52,12 @@ public class DefaultIncomeManager implements IncomeManager {
 
   @Override
   public void delete(Long id) throws NotFoundException {
-    incomeService.delete(id);
+    this.incomeService.delete(id);
+  }
+
+  @Override
+  public RangeDTO getRangeByPrincipal() {
+    return this.incomeService.getRangeByPrincipal();
   }
 
 }

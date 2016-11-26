@@ -22,10 +22,10 @@ Feature: Invoice range
     Then the minimum is '2015-10-25T00:00:00'
     Then the maximum is '2016-10-22T00:00:00'
 
-  Scenario: Show range of invoice with the user003
+  Scenario: Show range of invoice with the user004
     Given the invoice resource
-    And with the user 'user003' and password 'password'
+    And with the user 'user004' and password 'password'
     When I make a get request to the URL '/api/invoice/range'
     Then http status is ok
     Then the minimum is '2015-10-24T00:00:00'
-    Then the maximum is '2016-10-19T00:00:00'
+    Then the maximum is '2016-10-22T00:00:00'

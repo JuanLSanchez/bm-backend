@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import es.juanlsanchez.bm.domain.Income;
+import es.juanlsanchez.bm.web.dto.RangeDTO;
 import javassist.NotFoundException;
 
 public interface IncomeService {
@@ -19,5 +20,7 @@ public interface IncomeService {
   public Income update(Income income, Long incomeId) throws NotFoundException;
 
   public void delete(Long id) throws NotFoundException;
+
+  public RangeDTO getRangeByPrincipal();
 
 }

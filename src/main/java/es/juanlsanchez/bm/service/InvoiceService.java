@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import es.juanlsanchez.bm.domain.Invoice;
+import es.juanlsanchez.bm.web.dto.RangeDTO;
 import javassist.NotFoundException;
 
 public interface InvoiceService {
@@ -23,5 +24,7 @@ public interface InvoiceService {
       throws NotFoundException;
 
   public Invoice getOne(Long id) throws NotFoundException;
+
+  public RangeDTO getRangeByPrincipal();
 
 }

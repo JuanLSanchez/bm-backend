@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.juanlsanchez.bm.config.Constants;
 import es.juanlsanchez.bm.manager.InvoiceManager;
 import es.juanlsanchez.bm.web.dto.InvoiceDTO;
+import es.juanlsanchez.bm.web.dto.RangeDTO;
 import es.juanlsanchez.bm.web.util.pagination.HeaderUtil;
 import es.juanlsanchez.bm.web.util.pagination.PaginationUtil;
 import javassist.NotFoundException;
@@ -98,6 +99,11 @@ public class InvoiceResource {
         .headers(HeaderUtil.createEntityDeletionAlert("schedule", id.toString())).build();
   }
 
-
+  @RequestMapping(value = "/range", method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<RangeDTO> range() {
+    log.debug("REST request to get range");
+    return ResponseEntity.ok(this.invoiceManager.getRangeByPrincipal());
+  }
 
 }
