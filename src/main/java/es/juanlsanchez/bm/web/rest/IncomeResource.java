@@ -1,5 +1,6 @@
 package es.juanlsanchez.bm.web.rest;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,21 +17,22 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import es.juanlsanchez.bm.config.Constants;
 import es.juanlsanchez.bm.manager.IncomeManager;
 import es.juanlsanchez.bm.web.dto.IncomeDTO;
+import es.juanlsanchez.bm.web.dto.QuarterDTO;
 import es.juanlsanchez.bm.web.dto.RangeDTO;
 import es.juanlsanchez.bm.web.util.pagination.HeaderUtil;
 import es.juanlsanchez.bm.web.util.pagination.PaginationUtil;
 import javassist.NotFoundException;
 
-@RestController
+@Controller
 @RequestMapping(Constants.START_URL_API + "/income")
 public class IncomeResource {
 
@@ -104,6 +107,15 @@ public class IncomeResource {
   public ResponseEntity<RangeDTO> range() {
     log.debug("REST request to get range");
     return ResponseEntity.ok(this.incomeManager.getRangeByPrincipal());
+  }
+
+  @RequestMapping(value = "/document", method = RequestMethod.POST,
+      produces = "application/vnd.ms-excel", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<byte[]> document(@Valid @RequestBody QuarterDTO quarterDTO)
+      throws IOException {
+    log.debug("REST request to get document");
+    HSSFWorkbook document = this.incomeManager.getDocumen(quarterDTO);
+    return ResponseEntity.ok().body(document.getBytes());
   }
 
 }

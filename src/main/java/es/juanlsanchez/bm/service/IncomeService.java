@@ -1,5 +1,7 @@
 package es.juanlsanchez.bm.service;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -22,5 +24,8 @@ public interface IncomeService {
   public void delete(Long id) throws NotFoundException;
 
   public RangeDTO getRangeByPrincipal();
+
+  List<Income> findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThan(Instant start,
+      Instant finish);
 
 }

@@ -1,5 +1,7 @@
 package es.juanlsanchez.bm.repository;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -22,5 +24,8 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
   @Query("select new es.juanlsanchez.bm.web.dto.RangeDTO(min(income.incomeDate), max(income.incomeDate)) "
       + "from Income income where income.principal.login=?#{principal.username}")
   public RangeDTO getRangeByPrincipal(User principal);
+
+  public List<Income> findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThanOrderByIncomeDateAsc(
+      User principal, Instant start, Instant finish);
 
 }

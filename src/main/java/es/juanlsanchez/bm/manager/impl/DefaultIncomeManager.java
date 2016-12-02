@@ -4,14 +4,17 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import es.juanlsanchez.bm.manager.IncomeManager;
 import es.juanlsanchez.bm.mapper.IncomeMapper;
+import es.juanlsanchez.bm.service.DocumentService;
 import es.juanlsanchez.bm.service.IncomeService;
 import es.juanlsanchez.bm.web.dto.IncomeDTO;
+import es.juanlsanchez.bm.web.dto.QuarterDTO;
 import es.juanlsanchez.bm.web.dto.RangeDTO;
 import javassist.NotFoundException;
 
@@ -20,11 +23,14 @@ public class DefaultIncomeManager implements IncomeManager {
 
   private final IncomeMapper incomeMapper;
   private final IncomeService incomeService;
+  private final DocumentService documentService;
 
   @Inject
-  public DefaultIncomeManager(final IncomeMapper incomeMapper, final IncomeService incomeService) {
+  public DefaultIncomeManager(final IncomeMapper incomeMapper, final IncomeService incomeService,
+      final DocumentService documentService) {
     this.incomeMapper = incomeMapper;
     this.incomeService = incomeService;
+    this.documentService = documentService;
   }
 
   @Override
@@ -58,6 +64,11 @@ public class DefaultIncomeManager implements IncomeManager {
   @Override
   public RangeDTO getRangeByPrincipal() {
     return this.incomeService.getRangeByPrincipal();
+  }
+
+  @Override
+  public HSSFWorkbook getDocumen(QuarterDTO quarterDTO) {
+    return this.documentService.createIncomeDocument(quarterDTO);
   }
 
 }

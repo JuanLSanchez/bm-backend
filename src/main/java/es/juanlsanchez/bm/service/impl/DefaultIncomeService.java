@@ -1,5 +1,7 @@
 package es.juanlsanchez.bm.service.impl;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -76,6 +78,15 @@ public class DefaultIncomeService implements IncomeService {
   public RangeDTO getRangeByPrincipal() {
     User principal = this.userService.getPrincipal();
     return this.incomeRepository.getRangeByPrincipal(principal);
+  }
+
+  @Override
+  public List<Income> findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThan(
+      Instant start, Instant finish) {
+    User principal = this.userService.getPrincipal();
+    return this.incomeRepository
+        .findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThanOrderByIncomeDateAsc(
+            principal, start, finish);
   }
 
 }
