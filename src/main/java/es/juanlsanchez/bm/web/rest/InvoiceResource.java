@@ -1,5 +1,6 @@
 package es.juanlsanchez.bm.web.rest;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.juanlsanchez.bm.config.Constants;
 import es.juanlsanchez.bm.manager.InvoiceManager;
 import es.juanlsanchez.bm.web.dto.InvoiceDTO;
+import es.juanlsanchez.bm.web.dto.QuarterDTO;
 import es.juanlsanchez.bm.web.dto.RangeDTO;
 import es.juanlsanchez.bm.web.util.pagination.HeaderUtil;
 import es.juanlsanchez.bm.web.util.pagination.PaginationUtil;
@@ -104,6 +107,15 @@ public class InvoiceResource {
   public ResponseEntity<RangeDTO> range() {
     log.debug("REST request to get range");
     return ResponseEntity.ok(this.invoiceManager.getRangeByPrincipal());
+  }
+
+  @RequestMapping(value = "/document", method = RequestMethod.POST,
+      produces = "application/vnd.ms-excel", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<byte[]> document(@Valid @RequestBody QuarterDTO quarterDTO)
+      throws IOException {
+    log.debug("REST request to get document");
+    HSSFWorkbook document = this.invoiceManager.getDocumen(quarterDTO);
+    return ResponseEntity.ok().body(document.getBytes());
   }
 
 }

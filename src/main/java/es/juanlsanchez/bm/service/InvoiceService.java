@@ -1,5 +1,7 @@
 package es.juanlsanchez.bm.service;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -26,5 +28,8 @@ public interface InvoiceService {
   public Invoice getOne(Long id) throws NotFoundException;
 
   public RangeDTO getRangeByPrincipal();
+
+  public List<Invoice> findAllByPrincipalAndDateBuyGreaterThanEqualAndDateBuyLessThan(Instant start,
+      Instant finish);
 
 }

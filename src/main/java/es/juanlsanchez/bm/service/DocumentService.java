@@ -8,4 +8,6 @@ public interface DocumentService {
 
   public HSSFWorkbook createIncomeDocument(QuarterDTO quarterDTO);
 
+  public HSSFWorkbook createInvoiceDocument(QuarterDTO quarterDTO);
+
 }

@@ -1,5 +1,7 @@
 package es.juanlsanchez.bm.repository;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -24,5 +26,8 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
   @Query("select new es.juanlsanchez.bm.web.dto.RangeDTO(min(invoice.dateBuy), max(invoice.dateBuy)) "
       + "from Invoice invoice where invoice.principal.login=?#{principal.username}")
   public RangeDTO getRangeByPrincipal(User principal);
+
+  public List<Invoice> findAllByPrincipalAndDateBuyGreaterThanEqualAndDateBuyLessThanOrderByDateBuyAsc(
+      User principal, Instant start, Instant finish);
 
 }

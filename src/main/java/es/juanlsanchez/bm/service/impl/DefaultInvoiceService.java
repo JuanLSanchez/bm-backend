@@ -1,5 +1,7 @@
 package es.juanlsanchez.bm.service.impl;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -102,6 +104,15 @@ public class DefaultInvoiceService implements InvoiceService {
   public RangeDTO getRangeByPrincipal() {
     User principal = this.userService.getPrincipal();
     return this.invoiceRepository.getRangeByPrincipal(principal);
+  }
+
+  @Override
+  public List<Invoice> findAllByPrincipalAndDateBuyGreaterThanEqualAndDateBuyLessThan(Instant start,
+      Instant finish) {
+    User principal = this.userService.getPrincipal();
+    return this.invoiceRepository
+        .findAllByPrincipalAndDateBuyGreaterThanEqualAndDateBuyLessThanOrderByDateBuyAsc(principal,
+            start, finish);
   }
 
 }

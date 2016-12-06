@@ -1,5 +1,6 @@
 package es.juanlsanchez.bm.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -39,6 +40,12 @@ public class DefaultSectionService implements SectionService {
   public Optional<Section> findOne(Long id) {
     User principal = userService.getPrincipal();
     return this.sectionRepository.findOneByIdAndPrincipal(id, principal);
+  }
+
+  @Override
+  public List<Section> findAllByPrincipalOrderByOrderAsc() {
+    User principal = this.userService.getPrincipal();
+    return this.sectionRepository.findAllByPrincipalOrderByOrderAsc(principal);
   }
 
 
