@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: dev
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+      show-sql: true
+app:
+  properties:
+    security:
+      authentication:
+        jwt:
+          secret: my-secret-token-to-change-in-production
+          tokenValidityInSeconds: 86400
+logging:
+  level:
+    root: WARN
+    org.springframework.web: INFO
+    org.hibernate: INFO
+    es.juanlsanchez.bm: DEBUG
