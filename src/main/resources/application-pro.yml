@@ -1,9 +1,9 @@
 app:
   c3p0:
     datasource: 
-      jdbc-url: 
-      user: 
-      password: 
+      jdbc-url: jdbc:mysql://${OPENSHIFT_MYSQL_DB_HOST}:${OPENSHIFT_MYSQL_DB_PORT}/${OPENSHIFT_APP_NAME}?useSSL=false
+      user: ${OPENSHIFT_MYSQL_DB_USERNAME}
+      password: ${OPENSHIFT_MYSQL_DB_PASSWORD} 
       driver-class: com.mysql.jdbc.Driver
 spring:
   profiles:
@@ -12,7 +12,7 @@ spring:
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
       show-sql: false
 logging:
   config: classpath:logback-pro.xml
