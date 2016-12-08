@@ -7,7 +7,7 @@ app:
       driver-class: com.mysql.jdbc.Driver
 spring:
   profiles:
-    active: pro
+    active: openshift
   jpa: 
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
