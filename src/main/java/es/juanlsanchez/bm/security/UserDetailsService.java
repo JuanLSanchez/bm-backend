@@ -22,34 +22,29 @@ import es.juanlsanchez.bm.repository.UserRepository;
  * Authenticate a user from the database.
  */
 @Component("userDetailsService")
-public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+public class UserDetailsService
+    implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    private final Logger log = LoggerFactory.getLogger(UserDetailsService.class);
+  private final Logger log = LoggerFactory.getLogger(UserDetailsService.class);
 
-    @Inject
-    private UserRepository userRepository;
+  @Inject
+  private UserRepository userRepository;
 
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(final String login) {
-	log.debug("Authenticating {}", login);
-	Optional<User> userFromDatabase = userRepository.findOneByLogin(login);
-	return userFromDatabase.map(user -> {
-	    if (!user.isActivated()) {
-		throw new UserNotActivatedException("User "
-			+ login
-			+ " was not activated");
-	    }
-	    List<GrantedAuthority> grantedAuthorities = user.getAuthorities()
-		    .stream()
-		    .map(authority -> new SimpleGrantedAuthority(authority.getName()))
-		    .collect(Collectors.toList());
-	    return new org.springframework.security.core.userdetails.User(login, user.getPassword(),
-		    grantedAuthorities);
-	})
-		.orElseThrow(() -> new UsernameNotFoundException("User "
-			+ login
-			+ " was not found in the "
-			+ "database"));
-    }
+  @Override
+  @Transactional
+  public UserDetails loadUserByUsername(final String login) {
+    log.debug("Authenticating {}", login);
+    Optional<User> userFromDatabase = userRepository.findOneByLogin(login);
+    return userFromDatabase.map(user -> {
+      if (!user.isActivated()) {
+        throw new UserNotActivatedException("User " + login + " was not activated");
+      }
+      List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
+          .map(authority -> new SimpleGrantedAuthority(authority.getName()))
+          .collect(Collectors.toList());
+      return new org.springframework.security.core.userdetails.User(login, user.getPassword(),
+          grantedAuthorities);
+    }).orElseThrow(() -> new UsernameNotFoundException(
+        "User " + login + " was not found in the " + "database"));
+  }
 }
