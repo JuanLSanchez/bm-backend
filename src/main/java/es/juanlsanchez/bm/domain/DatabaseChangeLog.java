@@ -15,7 +15,7 @@ import lombok.Data;
 public class DatabaseChangeLog {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", length=30)
     private String id;
     @Column(name = "AUTHOR")
     private String author;

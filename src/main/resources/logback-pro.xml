@@ -4,11 +4,11 @@
 
 	<appender name="file"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>logs/bm.log</file>
+		<file>${OPENSHIFT_DATA_DIR}/logs/bm.log</file>
 		<append>false</append>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- daily rollover -->
-			<fileNamePattern>logs/bm.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<fileNamePattern>${OPENSHIFT_DATA_DIR}/logs/bm.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
 			<!-- keep 10 days' worth of history -->
 			<maxHistory>10</maxHistory>
 			<timeBasedFileNamingAndTriggeringPolicy
