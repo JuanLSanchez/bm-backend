@@ -1,4 +1,4 @@
-Feature: Supplier management
+Feature: Section list
 
   # List
   Scenario: List supplier without user
