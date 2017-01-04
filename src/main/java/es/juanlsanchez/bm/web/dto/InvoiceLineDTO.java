@@ -26,7 +26,7 @@ public class InvoiceLineDTO {
   @JsonProperty("base")
   @NotNull
   private Double base;
-  @JsonProperty("invoiceId")
+  @JsonProperty("invoice_id")
   @NotNull
   private Long invoiceId;
 
