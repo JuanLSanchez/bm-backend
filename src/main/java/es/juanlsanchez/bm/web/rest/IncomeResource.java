@@ -28,6 +28,7 @@ import es.juanlsanchez.bm.manager.IncomeManager;
 import es.juanlsanchez.bm.web.dto.IncomeDTO;
 import es.juanlsanchez.bm.web.dto.QuarterDTO;
 import es.juanlsanchez.bm.web.dto.RangeDTO;
+import es.juanlsanchez.bm.web.util.FileNameUtil;
 import es.juanlsanchez.bm.web.util.pagination.HeaderUtil;
 import es.juanlsanchez.bm.web.util.pagination.PaginationUtil;
 import javassist.NotFoundException;
@@ -115,7 +116,8 @@ public class IncomeResource {
       throws IOException {
     log.debug("REST request to get document");
     HSSFWorkbook document = this.incomeManager.getDocumen(quarterDTO);
-    return ResponseEntity.ok().body(document.getBytes());
+    String fileName = FileNameUtil.incomeBook(quarterDTO) + ".xls";
+    return ResponseEntity.ok().header("filename", fileName).body(document.getBytes());
   }
 
 }

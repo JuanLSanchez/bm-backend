@@ -2,7 +2,7 @@ package es.juanlsanchez.bm.web.dto;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,19 +15,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class InvoiceLineDTO {
+public class SectionDTO {
 
   @JsonProperty("id")
   private Long id;
-  @JsonProperty("iva")
-  @Range(min = 0, max = 100)
+  @NotBlank
+  @JsonProperty("name")
+  private String name;
+  @JsonProperty("order")
   @NotNull
-  private Integer iva;
-  @JsonProperty("base")
-  @NotNull
-  private Double base;
-  @JsonProperty("invoice_id")
-  @NotNull
-  private Long invoiceId;
+  private Integer order;
 
 }

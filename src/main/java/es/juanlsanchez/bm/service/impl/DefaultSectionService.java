@@ -6,6 +6,8 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import es.juanlsanchez.bm.domain.Section;
@@ -46,6 +48,11 @@ public class DefaultSectionService implements SectionService {
   public List<Section> findAllByPrincipalOrderByOrderAsc() {
     User principal = this.userService.getPrincipal();
     return this.sectionRepository.findAllByPrincipalOrderByOrderAsc(principal);
+  }
+
+  @Override
+  public Page<Section> findAllByPrincipal(Pageable pageable) {
+    return this.sectionRepository.findAllByPrincipal(pageable);
   }
 
 
