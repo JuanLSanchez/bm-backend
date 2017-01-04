@@ -30,12 +30,19 @@
 		<com.google.guava.version>19.0</com.google.guava.version>
 		<com.mchange.version>0.9.5.2</com.mchange.version>
 		<cucumber.version>1.2.4</cucumber.version>
+		<profile.database.migration></profile.database.migration>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Inject -->
@@ -51,11 +58,10 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<!-- Tomcat -->
+		<!-- Jetty -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
+			<artifactId>spring-boot-starter-jetty</artifactId>
 		</dependency>
 
 		<!-- Database conection -->
