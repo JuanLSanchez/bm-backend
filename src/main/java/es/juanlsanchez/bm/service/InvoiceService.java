@@ -1,6 +1,6 @@
 package es.juanlsanchez.bm.service;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ public interface InvoiceService {
 
   public RangeDTO getRangeByPrincipal();
 
-  public List<Invoice> findAllByPrincipalAndDateBuyGreaterThanEqualAndDateBuyLessThan(Instant start,
-      Instant finish);
+  public List<Invoice> findAllByPrincipalAndDateBuyGreaterThanEqualAndDateBuyLessThan(
+      LocalDate start, LocalDate finish);
 
 }

@@ -1,9 +1,8 @@
 package es.juanlsanchez.bm.web.dto;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,8 +23,8 @@ public class InvoiceDTO {
   private String number;
   @JsonProperty("date_buy")
   @NotNull
-  @Past
-  private Instant dateBuy;
+  // @Past
+  private LocalDate dateBuy;
   @JsonProperty("supplier_id")
   @NotNull
   private Long supplierId;

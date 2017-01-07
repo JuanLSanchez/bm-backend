@@ -1,6 +1,6 @@
 package es.juanlsanchez.bm.domain;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -11,8 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 
+import es.juanlsanchez.bm.annotation.PastLocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,8 +24,8 @@ public class Invoice extends UserObject {
   // Attributes -------------------------------------------------------------
   private String number;
   @NotNull
-  @Past
-  private Instant dateBuy;
+  @PastLocalDate
+  private LocalDate dateBuy;
 
   // Relationships------------------------------------------------------------
   @Valid

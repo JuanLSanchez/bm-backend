@@ -1,6 +1,6 @@
 package es.juanlsanchez.bm.web.dto;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RangeDTO {
 
-  private Instant min;
-  private Instant max;
+  private LocalDate min;
+  private LocalDate max;
 
 }

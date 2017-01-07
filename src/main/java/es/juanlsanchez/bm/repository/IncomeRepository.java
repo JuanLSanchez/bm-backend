@@ -1,6 +1,6 @@
 package es.juanlsanchez.bm.repository;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +26,6 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
   public RangeDTO getRangeByPrincipal(User principal);
 
   public List<Income> findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThanOrderByIncomeDateAsc(
-      User principal, Instant start, Instant finish);
+      User principal, LocalDate start, LocalDate finish);
 
 }

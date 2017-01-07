@@ -1,8 +1,7 @@
 package es.juanlsanchez.bm.service.impl;
 
-import java.time.Instant;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -37,6 +36,7 @@ import es.juanlsanchez.bm.web.dto.QuarterDTO;
 @Transactional
 public class DefaultDocumentService implements DocumentService {
 
+  private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
   private final IncomeService incomeService;
   private final InvoiceService invoiceService;
   private final SectionService sectionService;
@@ -53,12 +53,12 @@ public class DefaultDocumentService implements DocumentService {
   @Cacheable(CacheConfig.SHORT_CACHE)
   public HSSFWorkbook createIncomeDocument(QuarterDTO quarterDTO) {
     Map<Integer, List<Income>> months = Maps.newHashMap();
-    String timePattern = "%04d-%02d-%02dT00:00:00.00Z";
+    String timePattern = "%04d-%02d-%02d";
     for (int i = 1; i <= 3; i++) {
       int month = (quarterDTO.getQuarter() * 3) + i;
       int year = quarterDTO.getYear();
-      Instant start = Instant.parse(String.format(timePattern, year, month, 1));
-      Instant finish = Instant.parse(String.format(timePattern, year, month + 1, 1));
+      LocalDate start = LocalDate.parse(String.format(timePattern, year, month, 1));
+      LocalDate finish = LocalDate.parse(String.format(timePattern, year, month + 1, 1));
       months.put(month, this.incomeService
           .findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThan(start, finish));
     }
@@ -90,12 +90,12 @@ public class DefaultDocumentService implements DocumentService {
     Map<String, Integer> sectionsMap = IntStream.range(0, sections.size()).boxed()
         .collect(Collectors.toMap(index -> sections.get(index).getName(), index -> index));
     // sections.stream().collect(Collectors.toMap(Section::getName, Section::getOrder));
-    String timePattern = "%04d-%02d-%02dT00:00:00.00Z";
+    String timePattern = "%04d-%02d-%02d";
     for (int i = 1; i <= 3; i++) {
       int month = (quarterDTO.getQuarter() * 3) + i;
       int year = quarterDTO.getYear();
-      Instant start = Instant.parse(String.format(timePattern, year, month, 1));
-      Instant finish = Instant.parse(String.format(timePattern, year, month + 1, 1));
+      LocalDate start = LocalDate.parse(String.format(timePattern, year, month, 1));
+      LocalDate finish = LocalDate.parse(String.format(timePattern, year, month + 1, 1));
       months.put(month, this.invoiceService
           .findAllByPrincipalAndDateBuyGreaterThanEqualAndDateBuyLessThan(start, finish));
     }
@@ -140,7 +140,7 @@ public class DefaultDocumentService implements DocumentService {
 
       result = new String[numberOfInvoices][length];
       result[0][0] = invoice.getNumber();
-      result[0][1] = instantToString(invoice.getDateBuy());
+      result[0][1] = localDateToString(invoice.getDateBuy());
       result[0][2] = invoice.getSupplier().getName();
       result[0][3] = invoice.getSupplier().getNif();
       result[0][4] = invoice.getOperation().getName();
@@ -186,7 +186,7 @@ public class DefaultDocumentService implements DocumentService {
 
     result[0] = String.valueOf(position);
     // TODO: Transform to instants
-    result[1] = instantToString(income.getIncomeDate());
+    result[1] = localDateToString(income.getIncomeDate());
     result[2] = income.getNif();
     result[3] = income.getName();
     result[5] = String.format("%.2f", baseMoney);
@@ -196,11 +196,8 @@ public class DefaultDocumentService implements DocumentService {
     return result;
   }
 
-  private String instantToString(Instant instant) {
-    Calendar date = new GregorianCalendar();
-    date.setTimeInMillis(instant.toEpochMilli());
-    return String.format("%02d/%02d/%04d", date.get(Calendar.DAY_OF_MONTH),
-        date.get(Calendar.MONTH) + 1, date.get(Calendar.YEAR));
+  private String localDateToString(LocalDate localDate) {
+    return localDate.format(FORMATTER);
   }
 
   private void addRows(Sheet sheet, int rowNumber, String[] rows) {

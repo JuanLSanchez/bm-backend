@@ -22,15 +22,19 @@ public class DefaultUserService implements UserService {
     this.userRepository = userRepository;
   }
 
-  @Cacheable(CacheConfig.LONG_CACHE)
   public User getPrincipal() {
     User result = null;
     String login = SecurityUtils.getCurrentUserLogin();
     if (!StringUtils.isEmpty(login)) {
-      result = userRepository.findOneByLogin(login)
-          .orElseThrow(() -> new IllegalArgumentException("Not found user"));
+      result = getOneByLogin(login);
     }
     return result;
+  }
+
+  @Cacheable(CacheConfig.LONG_CACHE)
+  private User getOneByLogin(String login) {
+    return userRepository.findOneByLogin(login)
+        .orElseThrow(() -> new IllegalArgumentException("Not found user"));
   }
 
   @Override

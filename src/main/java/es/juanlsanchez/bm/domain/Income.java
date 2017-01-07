@@ -1,16 +1,16 @@
 package es.juanlsanchez.bm.domain;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
+import es.juanlsanchez.bm.annotation.PastLocalDate;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,8 +23,8 @@ import lombok.ToString;
 public class Income extends UserObject {
   // Attributes -------------------------------------------------------------
   @NotNull
-  @Past
-  private Instant incomeDate;
+  @PastLocalDate
+  private LocalDate incomeDate;
   @NotBlank
   private String name;
   private String nif;

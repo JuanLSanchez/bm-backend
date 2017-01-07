@@ -1,6 +1,6 @@
 package es.juanlsanchez.bm.service.impl;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,7 +82,7 @@ public class DefaultIncomeService implements IncomeService {
 
   @Override
   public List<Income> findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThan(
-      Instant start, Instant finish) {
+      LocalDate start, LocalDate finish) {
     User principal = this.userService.getPrincipal();
     return this.incomeRepository
         .findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThanOrderByIncomeDateAsc(

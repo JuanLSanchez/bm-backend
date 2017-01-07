@@ -1,6 +1,6 @@
 package es.juanlsanchez.bm.repository;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +28,6 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
   public RangeDTO getRangeByPrincipal(User principal);
 
   public List<Invoice> findAllByPrincipalAndDateBuyGreaterThanEqualAndDateBuyLessThanOrderByDateBuyAsc(
-      User principal, Instant start, Instant finish);
+      User principal, LocalDate start, LocalDate finish);
 
 }

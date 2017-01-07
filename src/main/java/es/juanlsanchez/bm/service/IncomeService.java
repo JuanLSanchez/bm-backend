@@ -1,6 +1,6 @@
 package es.juanlsanchez.bm.service;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +25,7 @@ public interface IncomeService {
 
   public RangeDTO getRangeByPrincipal();
 
-  List<Income> findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThan(Instant start,
-      Instant finish);
+  public List<Income> findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThan(
+      LocalDate start, LocalDate finish);
 
 }

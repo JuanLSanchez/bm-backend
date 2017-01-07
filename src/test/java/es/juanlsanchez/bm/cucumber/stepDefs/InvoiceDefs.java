@@ -2,8 +2,7 @@ package es.juanlsanchez.bm.cucumber.stepDefs;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,21 +50,21 @@ public class InvoiceDefs extends StepDefs {
   // Given --------------------------------------
   @Given("^a good invoiceDTO for user001$")
   public void a_good_invoiceDTO_for_user001() {
-    Instant dateBuy = Instant.now().plus(-10l, ChronoUnit.DAYS);
+    LocalDate dateBuy = LocalDate.now().plusDays(-10);
     InvoiceDTO invoiceDTO = new InvoiceDTO(null, "1adf1a323153asd", dateBuy, 1L, 1L);
     this.containerDefs.setResponseObject(invoiceDTO);;
   }
 
   @Given("^a invoiceDTO for user001 with the supplier of other user$")
   public void a_invoiceDTO_for_user001_with_the_supplier_of_other_user() {
-    Instant dateBuy = Instant.now().plus(-11l, ChronoUnit.DAYS);
+    LocalDate dateBuy = LocalDate.now().plusDays(-11);
     InvoiceDTO invoiceDTO = new InvoiceDTO(null, "asdfsdf", dateBuy, 40L, 1L);
     this.containerDefs.setResponseObject(invoiceDTO);;
   }
 
   @Given("^a invoiceDTO for user001 with the operation of other user$")
   public void a_invoiceDTO_for_user001_with_the_operation_of_other_user() {
-    Instant dateBuy = Instant.now().plus(-12l, ChronoUnit.DAYS);
+    LocalDate dateBuy = LocalDate.now().plusDays(-12);
     InvoiceDTO invoiceDTO = new InvoiceDTO(null, "asdfsafd", dateBuy, 1L, 6L);
     this.containerDefs.setResponseObject(invoiceDTO);;
   }
