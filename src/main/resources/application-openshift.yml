@@ -5,6 +5,19 @@ app:
       user: ${OPENSHIFT_MYSQL_DB_USERNAME}
       password: ${OPENSHIFT_MYSQL_DB_PASSWORD} 
       driver-class: com.mysql.jdbc.Driver
+  properties:
+    cors:
+      allowed-origins: '*'
+      allowed-methods: GET, PUT, POST, DELETE, OPTIONS
+      allowed-headers: '*'
+      exposed-headers: Link,FileName
+      allow-credentials: true
+      max-age: 1800
+    security:
+      authentication:
+        jwt:
+          secret: 
+          tokenValidityInSeconds: 86400
 spring:
   profiles:
     active: openshift
@@ -12,7 +25,7 @@ spring:
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
       show-sql: false
 logging:
   config: classpath:logback-pro.xml
