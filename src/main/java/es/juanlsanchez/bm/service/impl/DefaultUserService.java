@@ -2,9 +2,11 @@ package es.juanlsanchez.bm.service.impl;
 
 import javax.inject.Inject;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import es.juanlsanchez.bm.CacheConfig;
 import es.juanlsanchez.bm.domain.User;
 import es.juanlsanchez.bm.repository.UserRepository;
 import es.juanlsanchez.bm.security.SecurityUtils;
@@ -20,6 +22,7 @@ public class DefaultUserService implements UserService {
     this.userRepository = userRepository;
   }
 
+  @Cacheable(CacheConfig.LONG_CACHE)
   public User getPrincipal() {
     User result = null;
     String login = SecurityUtils.getCurrentUserLogin();

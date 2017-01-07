@@ -16,11 +16,13 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import es.juanlsanchez.bm.CacheConfig;
 import es.juanlsanchez.bm.domain.Income;
 import es.juanlsanchez.bm.domain.Invoice;
 import es.juanlsanchez.bm.domain.InvoiceLine;
@@ -48,6 +50,7 @@ public class DefaultDocumentService implements DocumentService {
   }
 
   @Override
+  @Cacheable(CacheConfig.SHORT_CACHE)
   public HSSFWorkbook createIncomeDocument(QuarterDTO quarterDTO) {
     Map<Integer, List<Income>> months = Maps.newHashMap();
     String timePattern = "%04d-%02d-%02dT00:00:00.00Z";
@@ -80,6 +83,7 @@ public class DefaultDocumentService implements DocumentService {
   }
 
   @Override
+  @Cacheable(CacheConfig.SHORT_CACHE)
   public HSSFWorkbook createInvoiceDocument(QuarterDTO quarterDTO) {
     Map<Integer, List<Invoice>> months = Maps.newHashMap();
     List<Section> sections = this.sectionService.findAllByPrincipalOrderByOrderAsc();
