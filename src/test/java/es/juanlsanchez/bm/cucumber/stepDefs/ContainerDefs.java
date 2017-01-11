@@ -1,5 +1,7 @@
 package es.juanlsanchez.bm.cucumber.stepDefs;
 
+import java.util.HashMap;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -18,6 +20,7 @@ public class ContainerDefs {
   private HttpHeaders httpHeaders;
   private Object responseObject;
   private LoginDTO loginDTO;
+  private HashMap<String, String> params = new HashMap<String, String>();
 
   // Constructors
   private ContainerDefs() {}

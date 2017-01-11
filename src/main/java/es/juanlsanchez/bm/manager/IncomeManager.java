@@ -1,5 +1,7 @@
 package es.juanlsanchez.bm.manager;
 
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -26,5 +28,7 @@ public interface IncomeManager {
   public RangeDTO getRangeByPrincipal();
 
   public HSSFWorkbook getDocumen(QuarterDTO quarterDTO);
+
+  public Map<LocalDate, Double> evolutionInDaysInTheRange(LocalDate start, LocalDate end);
 
 }

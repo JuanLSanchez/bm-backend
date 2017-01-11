@@ -1,5 +1,8 @@
 package es.juanlsanchez.bm.manager.impl;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -13,6 +16,7 @@ import es.juanlsanchez.bm.manager.IncomeManager;
 import es.juanlsanchez.bm.mapper.IncomeMapper;
 import es.juanlsanchez.bm.service.DocumentService;
 import es.juanlsanchez.bm.service.IncomeService;
+import es.juanlsanchez.bm.util.StatisticsUtil;
 import es.juanlsanchez.bm.web.dto.IncomeDTO;
 import es.juanlsanchez.bm.web.dto.QuarterDTO;
 import es.juanlsanchez.bm.web.dto.RangeDTO;
@@ -24,13 +28,15 @@ public class DefaultIncomeManager implements IncomeManager {
   private final IncomeMapper incomeMapper;
   private final IncomeService incomeService;
   private final DocumentService documentService;
+  private final StatisticsUtil statisticsUtil;
 
   @Inject
   public DefaultIncomeManager(final IncomeMapper incomeMapper, final IncomeService incomeService,
-      final DocumentService documentService) {
+      final DocumentService documentService, final StatisticsUtil statisticsUtil) {
     this.incomeMapper = incomeMapper;
     this.incomeService = incomeService;
     this.documentService = documentService;
+    this.statisticsUtil = statisticsUtil;
   }
 
   @Override
@@ -69,6 +75,12 @@ public class DefaultIncomeManager implements IncomeManager {
   @Override
   public HSSFWorkbook getDocumen(QuarterDTO quarterDTO) {
     return this.documentService.createIncomeDocument(quarterDTO);
+  }
+
+  @Override
+  public Map<LocalDate, Double> evolutionInDaysInTheRange(LocalDate start, LocalDate end) {
+    return statisticsUtil.fillInterval(this.incomeService.evolutionInDaysInTheRange(start, end),
+        start, end, 0.0, 1, ChronoUnit.DAYS);
   }
 
 }

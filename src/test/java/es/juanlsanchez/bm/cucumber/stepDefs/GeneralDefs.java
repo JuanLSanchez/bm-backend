@@ -4,12 +4,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -44,13 +48,24 @@ public class GeneralDefs extends StepDefs {
 
   }
 
+  // Given --------------------------------------
+  @Given("^adding the param '(.*)' with the value '(.*)'$")
+  public void a_good_invoiceLineDTO_for_user001(String param, String value) {
+    this.containerDefs.getParams().put(param, value);
+  }
+
   // When ------------------------------
   @When("^I make a get request to the URL '(.*)'$")
   public void i_make_a_request_to_the_url(String url) throws Exception {
-    containerDefs.setAction(this.containerDefs.getRestUserMockMvc()
-        .perform(get(url).accept(MediaType.APPLICATION_JSON_UTF8)
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
-            .headers(this.containerDefs.getHttpHeaders())));
+    MockHttpServletRequestBuilder requestBuilder = get(url).accept(MediaType.APPLICATION_JSON_UTF8)//
+        .contentType(MediaType.APPLICATION_JSON_UTF8)//
+        .headers(this.containerDefs.getHttpHeaders());
+    for (Map.Entry<String, String> entry : this.containerDefs.getParams().entrySet()) {
+      requestBuilder.param(entry.getKey(), entry.getValue());
+    }
+    containerDefs.setAction(//
+        this.containerDefs.getRestUserMockMvc().perform(//
+            requestBuilder));
 
   }
 
@@ -81,6 +96,16 @@ public class GeneralDefs extends StepDefs {
   }
 
   // Then ---------------------------------------
+  @Then("^exist the key '(.*)'$")
+  public void exit_the_key(String key) throws Exception {
+    this.containerDefs.getAction().andExpect(jsonPath("$." + key).exists());
+  }
+
+  @Then("^no exist the key '(.*)'$")
+  public void no_exit_the_key(String key) throws Exception {
+    this.containerDefs.getAction().andExpect(jsonPath("$." + key).doesNotExist());
+  }
+
   @Then("^http status is unauthorized$")
   public void the_status_is_not_unauthorized() throws Exception {
     checkStatus(status().isUnauthorized());

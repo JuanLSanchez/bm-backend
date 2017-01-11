@@ -8,9 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import es.juanlsanchez.bm.domain.Income;
 import es.juanlsanchez.bm.domain.User;
+import es.juanlsanchez.bm.util.object.Pair;
 import es.juanlsanchez.bm.web.dto.RangeDTO;
 
 public interface IncomeRepository extends JpaRepository<Income, Long> {
@@ -27,5 +29,13 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
 
   public List<Income> findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThanOrderByIncomeDateAsc(
       User principal, LocalDate start, LocalDate finish);
+
+  @Query("select new es.juanlsanchez.bm.util.object.Pair(income.incomeDate, income.base) "//
+      + "from Income income where "//
+      + "   income.incomeDate >= :start "//
+      + "   and income.incomeDate < :end "//
+      + "group by income.incomeDate")
+  public List<Pair<LocalDate, Double>> evolutionInDaysInTheRange(@Param("start") LocalDate start,
+      @Param("end") LocalDate end);
 
 }

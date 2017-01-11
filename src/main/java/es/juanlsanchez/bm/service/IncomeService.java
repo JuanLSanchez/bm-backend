@@ -2,6 +2,7 @@ package es.juanlsanchez.bm.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -27,5 +28,7 @@ public interface IncomeService {
 
   public List<Income> findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThan(
       LocalDate start, LocalDate finish);
+
+  public Map<LocalDate, Double> evolutionInDaysInTheRange(LocalDate start, LocalDate end);
 
 }

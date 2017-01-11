@@ -2,7 +2,9 @@ package es.juanlsanchez.bm.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -17,6 +19,7 @@ import es.juanlsanchez.bm.mapper.IncomeMapper;
 import es.juanlsanchez.bm.repository.IncomeRepository;
 import es.juanlsanchez.bm.service.IncomeService;
 import es.juanlsanchez.bm.service.UserService;
+import es.juanlsanchez.bm.util.object.Pair;
 import es.juanlsanchez.bm.web.dto.RangeDTO;
 import javassist.NotFoundException;
 
@@ -87,6 +90,12 @@ public class DefaultIncomeService implements IncomeService {
     return this.incomeRepository
         .findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThanOrderByIncomeDateAsc(
             principal, start, finish);
+  }
+
+  @Override
+  public Map<LocalDate, Double> evolutionInDaysInTheRange(LocalDate start, LocalDate end) {
+    return this.incomeRepository.evolutionInDaysInTheRange(start, end).stream()
+        .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
   }
 
 }
