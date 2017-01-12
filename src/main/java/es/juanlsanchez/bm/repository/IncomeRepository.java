@@ -30,7 +30,7 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
   public List<Income> findAllByPrincipalAndIncomeDateGreaterThanEqualAndIncomeDateLessThanOrderByIncomeDateAsc(
       User principal, LocalDate start, LocalDate finish);
 
-  @Query("select new es.juanlsanchez.bm.util.object.Pair(income.incomeDate, income.base) "//
+  @Query("select new es.juanlsanchez.bm.util.object.Pair(income.incomeDate, sum(income.base)) "//
       + "from Income income where "//
       + "   income.incomeDate >= :start "//
       + "   and income.incomeDate < :end "//

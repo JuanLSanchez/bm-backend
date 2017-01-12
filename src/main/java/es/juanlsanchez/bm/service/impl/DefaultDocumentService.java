@@ -95,7 +95,7 @@ public class DefaultDocumentService implements DocumentService {
       int month = (quarterDTO.getQuarter() * 3) + i;
       int year = quarterDTO.getYear();
       LocalDate start = LocalDate.parse(String.format(timePattern, year, month, 1));
-      LocalDate finish = LocalDate.parse(String.format(timePattern, year, month + 1, 1));
+      LocalDate finish = LocalDate.ofEpochDay(start.toEpochDay()).plusMonths(1);
       months.put(month, this.invoiceService
           .findAllByPrincipalAndDateBuyGreaterThanEqualAndDateBuyLessThan(start, finish));
     }
