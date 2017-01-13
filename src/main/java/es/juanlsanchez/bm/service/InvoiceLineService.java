@@ -1,5 +1,7 @@
 package es.juanlsanchez.bm.service;
 
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -25,5 +27,7 @@ public interface InvoiceLineService {
 
   public Page<InvoiceLine> findAllByInvoice(Long invoiceId, Pageable pageable)
       throws NotFoundException;
+
+  public Map<LocalDate, Double> evolutionInDaysInTheRange(LocalDate start, LocalDate end);
 
 }

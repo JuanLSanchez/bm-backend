@@ -1,6 +1,9 @@
 package es.juanlsanchez.bm.service.impl;
 
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -16,6 +19,7 @@ import es.juanlsanchez.bm.repository.InvoiceLineRepository;
 import es.juanlsanchez.bm.service.InvoiceLineService;
 import es.juanlsanchez.bm.service.InvoiceService;
 import es.juanlsanchez.bm.service.UserService;
+import es.juanlsanchez.bm.util.object.Pair;
 import javassist.NotFoundException;
 
 @Service
@@ -89,6 +93,12 @@ public class DefaultInvoiceLineService implements InvoiceLineService {
       throws NotFoundException {
     this.invoiceService.getOne(invoiceId);
     return this.invoiceLineRepository.findAllByInvoiceId(invoiceId, pageable);
+  }
+
+  @Override
+  public Map<LocalDate, Double> evolutionInDaysInTheRange(LocalDate start, LocalDate end) {
+    return this.invoiceLineRepository.evolutionInDaysInTheRange(start, end).stream()
+        .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
   }
 
 }

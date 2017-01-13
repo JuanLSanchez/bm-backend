@@ -1,5 +1,8 @@
 package es.juanlsanchez.bm.manager.impl;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Component;
 import es.juanlsanchez.bm.manager.InvoiceLineManager;
 import es.juanlsanchez.bm.mapper.InvoiceLineMapper;
 import es.juanlsanchez.bm.service.InvoiceLineService;
+import es.juanlsanchez.bm.util.StatisticsUtil;
 import es.juanlsanchez.bm.web.dto.InvoiceLineDTO;
 import javassist.NotFoundException;
 
@@ -19,12 +23,14 @@ public class DefaultInvoiceLineManager implements InvoiceLineManager {
 
   private final InvoiceLineMapper invoiceLineMapper;
   private final InvoiceLineService invoiceLineService;
+  private final StatisticsUtil statisticsUtil;
 
   @Inject
   public DefaultInvoiceLineManager(final InvoiceLineMapper invoiceLineMapper,
-      final InvoiceLineService invoiceLineService) {
+      final InvoiceLineService invoiceLineService, final StatisticsUtil statisticsUtil) {
     this.invoiceLineMapper = invoiceLineMapper;
     this.invoiceLineService = invoiceLineService;
+    this.statisticsUtil = statisticsUtil;
   }
 
   @Override
@@ -67,6 +73,13 @@ public class DefaultInvoiceLineManager implements InvoiceLineManager {
       throws NotFoundException {
     return invoiceLineService.findAllByInvoice(invoiceId, pageable)
         .map(invoiceLine -> invoiceLineMapper.invoiceLineToInvoiceLineDTO(invoiceLine));
+  }
+
+  @Override
+  public Map<LocalDate, Double> evolutionInDaysInTheRange(LocalDate start, LocalDate end) {
+    return statisticsUtil.fillInterval(
+        this.invoiceLineService.evolutionInDaysInTheRange(start, end), start, end, 0.0, 1,
+        ChronoUnit.DAYS);
   }
 
 }
