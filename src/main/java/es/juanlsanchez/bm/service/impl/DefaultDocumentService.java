@@ -15,13 +15,11 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import es.juanlsanchez.bm.CacheConfig;
 import es.juanlsanchez.bm.domain.Income;
 import es.juanlsanchez.bm.domain.Invoice;
 import es.juanlsanchez.bm.domain.InvoiceLine;
@@ -30,6 +28,7 @@ import es.juanlsanchez.bm.service.DocumentService;
 import es.juanlsanchez.bm.service.IncomeService;
 import es.juanlsanchez.bm.service.InvoiceService;
 import es.juanlsanchez.bm.service.SectionService;
+import es.juanlsanchez.bm.util.TaxsUtil;
 import es.juanlsanchez.bm.web.dto.QuarterDTO;
 
 @Service
@@ -50,7 +49,6 @@ public class DefaultDocumentService implements DocumentService {
   }
 
   @Override
-  @Cacheable(CacheConfig.SHORT_CACHE)
   public HSSFWorkbook createIncomeDocument(QuarterDTO quarterDTO) {
     Map<Integer, List<Income>> months = Maps.newHashMap();
     String timePattern = "%04d-%02d-%02d";
@@ -83,7 +81,6 @@ public class DefaultDocumentService implements DocumentService {
   }
 
   @Override
-  @Cacheable(CacheConfig.SHORT_CACHE)
   public HSSFWorkbook createInvoiceDocument(QuarterDTO quarterDTO) {
     Map<Integer, List<Invoice>> months = Maps.newHashMap();
     List<Section> sections = this.sectionService.findAllByPrincipalOrderByOrderAsc();
@@ -151,8 +148,9 @@ public class DefaultDocumentService implements DocumentService {
         double ivaPerOne = Double.valueOf(invoiceLine.getIva()) / 100;
         int round = 100;
         double baseMoney = ((double) Math.round(invoiceLine.getBase() * round)) / round;
-        double totalMoney = baseMoney / (1 - ivaPerOne);
-        totalMoney = ((double) Math.round(totalMoney * round)) / round;
+        double totalMoney = ((double) Math
+            .round(TaxsUtil.baseAndIvaToTotal(invoiceLine.getBase(), invoiceLine.getIva()) * round))
+            / round;
         double ivaMoney = totalMoney - baseMoney;
 
         result[i][basePosition] = String.format("%.2f", baseMoney);
@@ -181,7 +179,9 @@ public class DefaultDocumentService implements DocumentService {
     int round = 100;
     double baseMoney = ((double) Math.round(income.getBase() * round)) / round;
     double totalMoney = baseMoney / (1 - ivaPerOne);
-    totalMoney = ((double) Math.round(totalMoney * round)) / round;
+    totalMoney =
+        ((double) Math.round(TaxsUtil.baseAndIvaToTotal(income.getBase(), income.getIva()) * round))
+            / round;
     double ivaMoney = totalMoney - baseMoney;
 
     result[0] = String.valueOf(position);
