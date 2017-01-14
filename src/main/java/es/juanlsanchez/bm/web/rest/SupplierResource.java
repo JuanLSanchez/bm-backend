@@ -2,7 +2,9 @@ package es.juanlsanchez.bm.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -11,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.juanlsanchez.bm.config.Constants;
@@ -95,6 +99,19 @@ public class SupplierResource {
 
     return ResponseEntity.ok()
         .headers(HeaderUtil.createEntityDeletionAlert("schedule", id.toString())).build();
+  }
+
+  // Statistics
+
+  @RequestMapping(value = "/statistic/evolution", method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Map<SupplierDTO, Map<LocalDate, Double>>> evolutionInDaysInTheRange(
+      @RequestParam(required = true,
+          name = "start") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate start,
+      @RequestParam(required = true,
+          name = "end") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end) {
+    log.debug("REST request to get evolition in the range {}-{}", start, end);
+    return ResponseEntity.ok(this.supplierManager.evolutionInDaysInTheRange(start, end));
   }
 
 

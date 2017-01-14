@@ -1,5 +1,7 @@
 package es.juanlsanchez.bm.manager;
 
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -21,5 +23,8 @@ public interface SupplierManager {
   public void delete(Long id) throws NotFoundException;
 
   public Optional<SupplierDTO> findOne(Long id);
+
+  public Map<SupplierDTO, Map<LocalDate, Double>> evolutionInDaysInTheRange(LocalDate start,
+      LocalDate end);
 
 }

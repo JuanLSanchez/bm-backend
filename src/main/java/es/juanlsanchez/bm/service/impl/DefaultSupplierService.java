@@ -4,7 +4,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -79,6 +82,14 @@ public class DefaultSupplierService implements SupplierService {
         is(equalTo(true)));
     supplierRepository.delete(id);
 
+  }
+
+  @Override
+  public Map<Supplier, Map<LocalDate, Double>> evolutionInDaysInTheRange(LocalDate start,
+      LocalDate end) {
+    return this.supplierRepository.evolutionInDaysInTheRange(start, end).stream()
+        .collect(Collectors.groupingBy(trio -> trio.getFirst(),
+            Collectors.toMap(trio -> trio.getSecond(), trio -> trio.getThird())));
   }
 
 }

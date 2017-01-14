@@ -1,15 +1,19 @@
 package es.juanlsanchez.bm.repository;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.juanlsanchez.bm.domain.Supplier;
 import es.juanlsanchez.bm.domain.User;
+import es.juanlsanchez.bm.util.object.Trio;
 
 @Transactional(rollbackFor = Throwable.class)
 public interface SupplierRepository extends JpaRepository<Supplier, Long> {
@@ -19,5 +23,13 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
   public Page<Supplier> findAllByPrincipal(Pageable pageable);
 
   public Optional<Supplier> findOneByIdAndPrincipal(Long id, User principal);
+
+  @Query("select new es.juanlsanchez.bm.util.object.Trio(invoiceLine.invoice.supplier, invoiceLine.invoice.dateBuy, sum(invoiceLine.base)) "//
+      + "from InvoiceLine invoiceLine where "//
+      + "   invoiceLine.invoice.dateBuy >= :start "//
+      + "   and invoiceLine.invoice.dateBuy < :end "//
+      + "group by invoiceLine.invoice.dateBuy, invoiceLine.invoice.supplier")
+  public List<Trio<Supplier, LocalDate, Double>> evolutionInDaysInTheRange(
+      @Param("start") LocalDate start, @Param("end") LocalDate end);
 
 }

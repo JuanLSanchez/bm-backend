@@ -1,6 +1,9 @@
 package es.juanlsanchez.bm.manager.impl;
 
+import java.time.LocalDate;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -59,6 +62,14 @@ public class DefaultSupplierManager implements SupplierManager {
   @Override
   public SupplierDTO getOne(Long id) throws NotFoundException {
     return supplierMapper.supplierToSupplierDTO(supplierService.getOne(id));
+  }
+
+  @Override
+  public Map<SupplierDTO, Map<LocalDate, Double>> evolutionInDaysInTheRange(LocalDate start,
+      LocalDate end) {
+    return this.supplierService.evolutionInDaysInTheRange(start, end).entrySet().stream().collect(
+        Collectors.toMap(entry -> this.supplierMapper.supplierToSupplierDTO(entry.getKey()),
+            entry -> entry.getValue()));
   }
 
 }
