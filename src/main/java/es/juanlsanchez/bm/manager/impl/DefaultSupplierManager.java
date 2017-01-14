@@ -1,7 +1,8 @@
 package es.juanlsanchez.bm.manager.impl;
 
 import java.time.LocalDate;
-import java.util.Map;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Component;
 import es.juanlsanchez.bm.manager.SupplierManager;
 import es.juanlsanchez.bm.mapper.SupplierMapper;
 import es.juanlsanchez.bm.service.SupplierService;
+import es.juanlsanchez.bm.util.StatisticsUtil;
 import es.juanlsanchez.bm.web.dto.SupplierDTO;
+import es.juanlsanchez.bm.web.dto.SupplierWithEvolutionDTO;
 import javassist.NotFoundException;
 
 @Component
@@ -22,12 +25,14 @@ public class DefaultSupplierManager implements SupplierManager {
 
   private final SupplierMapper supplierMapper;
   private final SupplierService supplierService;
+  private final StatisticsUtil statisticsUtil;
 
   @Inject
   public DefaultSupplierManager(final SupplierMapper supplierMapper,
-      final SupplierService supplierService) {
+      final SupplierService supplierService, final StatisticsUtil statisticsUtil) {
     this.supplierMapper = supplierMapper;
     this.supplierService = supplierService;
+    this.statisticsUtil = statisticsUtil;
   }
 
   @Override
@@ -65,11 +70,11 @@ public class DefaultSupplierManager implements SupplierManager {
   }
 
   @Override
-  public Map<SupplierDTO, Map<LocalDate, Double>> evolutionInDaysInTheRange(LocalDate start,
-      LocalDate end) {
-    return this.supplierService.evolutionInDaysInTheRange(start, end).entrySet().stream().collect(
-        Collectors.toMap(entry -> this.supplierMapper.supplierToSupplierDTO(entry.getKey()),
-            entry -> entry.getValue()));
+  public List<SupplierWithEvolutionDTO> evolutionInDaysInTheRange(LocalDate start, LocalDate end) {
+    return this.supplierService.evolutionInDaysInTheRange(start, end).entrySet().stream()
+        .map(entry -> this.supplierMapper.supplierToSupplierWithEvolutionDTO(entry.getKey(),
+            statisticsUtil.fillInterval(entry.getValue(), start, end, 0., 1, ChronoUnit.DAYS)))
+        .collect(Collectors.toList());
   }
 
 }

@@ -1,13 +1,14 @@
 package es.juanlsanchez.bm.manager;
 
 import java.time.LocalDate;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import es.juanlsanchez.bm.web.dto.SupplierDTO;
+import es.juanlsanchez.bm.web.dto.SupplierWithEvolutionDTO;
 import javassist.NotFoundException;
 
 public interface SupplierManager {
@@ -24,7 +25,6 @@ public interface SupplierManager {
 
   public Optional<SupplierDTO> findOne(Long id);
 
-  public Map<SupplierDTO, Map<LocalDate, Double>> evolutionInDaysInTheRange(LocalDate start,
-      LocalDate end);
+  public List<SupplierWithEvolutionDTO> evolutionInDaysInTheRange(LocalDate start, LocalDate end);
 
 }

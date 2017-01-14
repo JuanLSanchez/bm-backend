@@ -4,7 +4,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -28,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.juanlsanchez.bm.config.Constants;
 import es.juanlsanchez.bm.manager.SupplierManager;
 import es.juanlsanchez.bm.web.dto.SupplierDTO;
+import es.juanlsanchez.bm.web.dto.SupplierWithEvolutionDTO;
 import es.juanlsanchez.bm.web.util.pagination.HeaderUtil;
 import es.juanlsanchez.bm.web.util.pagination.PaginationUtil;
 import javassist.NotFoundException;
@@ -105,13 +105,14 @@ public class SupplierResource {
 
   @RequestMapping(value = "/statistic/evolution", method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Map<SupplierDTO, Map<LocalDate, Double>>> evolutionInDaysInTheRange(
+  public ResponseEntity<List<SupplierWithEvolutionDTO>> evolutionInDaysInTheRange(
       @RequestParam(required = true,
           name = "start") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate start,
       @RequestParam(required = true,
           name = "end") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end) {
     log.debug("REST request to get evolition in the range {}-{}", start, end);
-    return ResponseEntity.ok(this.supplierManager.evolutionInDaysInTheRange(start, end));
+    List<SupplierWithEvolutionDTO> result = this.supplierManager.evolutionInDaysInTheRange(start, end);
+    return ResponseEntity.ok(result);
   }
 
 
