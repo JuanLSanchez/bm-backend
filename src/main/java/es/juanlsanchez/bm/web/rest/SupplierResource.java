@@ -110,9 +110,8 @@ public class SupplierResource {
           name = "start") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate start,
       @RequestParam(required = true,
           name = "end") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end) {
-    log.debug("REST request to get evolition in the range {}-{}", start, end);
-    List<SupplierWithEvolutionDTO> result = this.supplierManager.evolutionInDaysInTheRange(start, end);
-    return ResponseEntity.ok(result);
+    log.debug("REST request to get evolition in the range {} <-> {}", start, end);
+    return ResponseEntity.ok(this.supplierManager.evolutionInDaysInTheRange(start, end));
   }
 
 
