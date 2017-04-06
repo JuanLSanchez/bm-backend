@@ -33,7 +33,7 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
   @Query("select new es.juanlsanchez.bm.util.object.Pair(income.incomeDate, sum(income.base)) "//
       + "from Income income where "//
       + "   income.incomeDate >= :start "//
-      + "   and income.incomeDate < :end "//
+      + "   and income.incomeDate < :end " + "   and income.principal.login=?#{principal.username} "//
       + "group by income.incomeDate")
   public List<Pair<LocalDate, Double>> evolutionInDaysInTheRange(@Param("start") LocalDate start,
       @Param("end") LocalDate end);

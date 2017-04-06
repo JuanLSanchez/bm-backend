@@ -27,7 +27,8 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
   @Query("select new es.juanlsanchez.bm.util.object.Trio(invoiceLine.invoice.supplier, invoiceLine.invoice.dateBuy, sum(invoiceLine.base)) "//
       + "from InvoiceLine invoiceLine where "//
       + "   invoiceLine.invoice.dateBuy >= :start "//
-      + "   and invoiceLine.invoice.dateBuy < :end "//
+      + "   and invoiceLine.invoice.dateBuy < :end "
+      + "   and invoiceLine.invoice.principal.login=?#{principal.username} "//
       + "group by invoiceLine.invoice.dateBuy, invoiceLine.invoice.supplier")
   public List<Trio<Supplier, LocalDate, Double>> evolutionInDaysInTheRange(
       @Param("start") LocalDate start, @Param("end") LocalDate end);

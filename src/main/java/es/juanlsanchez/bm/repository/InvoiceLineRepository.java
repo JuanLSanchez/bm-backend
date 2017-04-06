@@ -27,7 +27,8 @@ public interface InvoiceLineRepository extends JpaRepository<InvoiceLine, Long> 
   @Query("select new es.juanlsanchez.bm.util.object.Pair(invoiceLine.invoice.dateBuy, sum(invoiceLine.base)) "//
       + "from InvoiceLine invoiceLine where "//
       + "   invoiceLine.invoice.dateBuy >= :start "//
-      + "   and invoiceLine.invoice.dateBuy < :end "//
+      + "   and invoiceLine.invoice.dateBuy < :end "
+      + "   and invoiceLine.invoice.principal.login=?#{principal.username} "//
       + "group by invoiceLine.invoice.dateBuy")
   public List<Pair<LocalDate, Double>> evolutionInDaysInTheRange(@Param("start") LocalDate start,
       @Param("end") LocalDate end);
